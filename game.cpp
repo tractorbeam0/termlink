@@ -25,7 +25,7 @@
 #include <unistd.h>
 
 void Game() {
-  //Initial "Cutscene" as you'd see in the actual Fallout, but with additions to add cool points and make it a bit more believable.
+  //Smaller Intro with the actual interface.
 
   //Loading debugger's physical RAM viewer, loading the Login program, editing the debugger to display section of RAM with potential password over login program. 
   //  ^^^Obviously this is fake, it's just that it'll seem even faker if it doesn't sound at least plausible in concept.
