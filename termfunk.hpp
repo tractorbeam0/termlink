@@ -22,11 +22,12 @@
 #pragma once
 
 #define BEEP    '\7' //It's hard to see '\7' as a beep, but...
-#define NULCHAR '\0' //it's not as hard to see '\0' as nul, this definition might be redundant, *shrug*
+#define NULCHAR '\0' //it's not as hard to see '\0' as nullchar, this definition might be redundant, *shrug*
 
 #include <string>
+#include <sys/ioctl.h> //Required to properly declare the w struct.
 
-extern struct winsize w;
+struct winsize w;
 
 //Simple functions (they do a thing, nothing more)
 

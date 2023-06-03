@@ -20,22 +20,22 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "termfunk.h"
+#include "termfunk.hpp"
 #include <iostream>
 #include <unistd.h>
 
 void Game(bool debug) {
-  //Initial "Cutscene" as you'd see in the actual game, but with additions to add cool points and make it a bit more believable.
+  //Initial "Cutscene" as you'd see in the actual Fallout, but with additions to add cool points and make it a bit more believable.
 
   //Loading debugger's physical RAM viewer, loading the Login program, editing the debugger to display section of RAM with potential password over login program. 
   //  ^^^Obviously this is fake, it's just that it'll seem even faker if it doesn't sound at least plausible in concept.
   usleep(3000000);
   slowPrint(0, 0, "Welcome to ROBCO Industries (TM) Termlink");
   
-  if (debug = false) {
-    slowPrint(0, 1, "**LOGIN SCRIPT ACTIVE**\n\n");
-  } else {
+  if debug {
     slowPrint(0, 1, "**LOGIN SCRIPT ACTIVE** **DEBUG MODE ACTIVE, BEHAVIOR MAY BE UNPREDICTABLE**\n");
+  } else {
+    slowPrint(0, 1, "**LOGIN SCRIPT ACTIVE**\n\n");
   }
   usleep(150000);
   slowPrint(0, 3, "TERMINAL SET TO MAINTANANCE MODE - Please contact your administrator.\n");
