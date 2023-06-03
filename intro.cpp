@@ -27,7 +27,7 @@
 #include <sys/ioctl.h>
 using namespace std;
 
-void intro() {
+void Intro() {
 
   usleep(2401000); //Dramatic pause...
   cursorHide();
@@ -130,28 +130,4 @@ void intro() {
   }
   setCursorPos(0,0);
   cursorShow();
-
-  //Loading debugger's physical RAM viewer, loading the Login program, editing the debugger to display section of RAM with potential password over login program. 
-  //  ^^^Obviously this is fake, it's just that it'll seem even faker if it doesn't sound at least plausible in concept.
-  usleep(3000000);
-  slowPrint(0, 0, "Welcome to ROBCO Industries (TM) Termlink");
-  
-  slowPrint(0, 1, "**LOGIN SCRIPT ACTIVE**\n\n");
-  usleep(150000);
-  slowPrint(0, 3, "TERMINAL SET TO MAINTANANCE MODE - Please contact your administrator.\n");
-  usleep(50000);
-  slowPrint(0, 4, "00> LOD 00,7D\n");
-  slowPrint(0, 5, "70> LOD E1,FF\n");
-  slowPrint(0, 6, "78> INS 69, 00 5F 4B D8 A7 01\n");
-  slowPrint(0, 7, "79> INS 6A, FF 4D 0A AA 6B 4F\n");
-  slowPrint(0, 8, "7A> INS 6B, 07 55 7C 3E D1 1F\n");
-  slowPrint(0, 9, "7B> //CODE INJECTION COMPLETE\n");
-  slowPrint(0,10, "7B> RUN E1\n");
-  usleep(520000);  
-  termClear();
-  slowPrint(0, 2, "Password Required\n\n");
-  usleep(200000);
-  slowPrint(0, 4, "Starting Debugger...");
-  usleep(400000);
-  slowPrint(0, 4, "Mapping physical RAM...\n");
 }

@@ -20,40 +20,26 @@
 */
 
 #pragma once
-#ifndef TERMFUNK_H
-#define TERMFUNK_H
-/*
-  ,^.   "I am the header guard..."
-  |||
-  |||       _T_     "If you have been here before,
-  |||   .-.[:|:].-.  YOU SHALL NOT PASS!"
-  ===_ /\|  "'"  |/
-   E]_|\/ \--|-|''''|
-   O  `'  '=[:]| A  |
-          /""""|  P |
-         /"""""`.__.'
-        []"/"""\"[]
-        | \     / |
-        | |     | |
-      <\\\)     (///>
-(Art courtesy of ascii.co.uk)
-*/
 
-#define BEEP    '\7'
-#define NULCHAR '\0'
+#define BEEP    '\7' //It's hard to see '\7' as a beep, but...
+#define NULCHAR '\0' //it's not as hard to see '\0' as nul, this definition might be redundant, *shrug*
 
 #include <string>
 
 extern struct winsize w;
-void funkInit();
+
+//Simple functions (they do a thing, nothing more)
+
+void clearLine();
 void cursorHide();
 void cursorShow();
-void setCursorPos(int, int);
-void clearScreen();
-void slowPrint(int, int, std::string);
-std::string center(std::string);
-void clearLine();
+void funkClose();
+void funkInit();
 void termClear();
-void termReset();
+void clearScreen();
 
-#endif
+//Complex functions (they require input and can do different things)
+
+void setCursorPos(int x, int y);
+void slowPrint(int x, int y, std::string input);
+std::string center(std::string input);

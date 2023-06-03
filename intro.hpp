@@ -22,7 +22,5 @@
 */
 
 #pragma once
-#ifndef TERMLINK_INTRO_H
-#define TERMLINK_INTRO_H
-void intro();
-#endif
+
+void Intro();

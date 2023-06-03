@@ -27,7 +27,26 @@
 #include <cmath>        //center()
 using namespace std;
 
-struct winsize w;
+
+
+//**LOCAL (Only used in this source)
+
+extern struct winsize w; //Used specifically for window sizes since ioctl unfortunately won't output to anything but a struct.
+
+//Copy & Pasted from cplusplus.com because standard functions don't recognize UTF-8 chars as just 1 character, need it for box drawing, thanks Peter87 (10193)!
+size_t strlen_utf8(const string& str) {
+  size_t length = 0;
+  for (char c : str) {
+    if ((c & 0xC0) != 0x80) {
+      ++length;
+    }
+  }
+  return length;
+}
+
+
+//**PUBLIC (Declared in the header to be used elsewhere)
+
 //Usage: int main() {funkInit(); ...}
 // Performs all the actions required to help the functions... y'know, function.
 void funkInit() {
@@ -67,18 +86,7 @@ void slowPrint(int x, int y, string input) {
     cout << "\033[" << y << ";" << x << "H" << input[i] << flush;
     usleep(16666);
   }
-}
-
-//Copy & Pasted from cplusplus.com because standard functions don't recognize UTF-8 chars as just 1 character, need it for box drawing, thanks Peter87 (10193)!
-size_t strlen_utf8(const string& str) {
-  size_t length = 0;
-  for (char c : str) {
-    if ((c & 0xC0) != 0x80) {
-      ++length;
-    }
-  }
-  return length;
-}          
+} 
 
 //Usage: cout << center("Hello World!");
 // Returns a string with the proper number of spaces to appear at the center of the screen when printed.
@@ -109,6 +117,6 @@ void termClear() {
   setCursorPos(0,1);
 }
 
-void termReset() {
+void funkClose() {
   cout << "\e[0m" << flush;
 }

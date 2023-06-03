@@ -1,4 +1,6 @@
 /* COPYRIGHT NOTICE
+  game.hpp  - game's associated header file
+  game      - The vast majority of the termlink program
   termlink  - A recreation of the terminal hacking minigame from the
               Fallout series, with a sizable portion of personal
               touches
@@ -19,21 +21,6 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//"YOU ARE OUT OF UNIFORM SOLDIER, WHERE IS YOUR POOWHHERR AAHHRRMOR!?"
+#pragma once
 
-#include "termfunk.hpp"
-#include "intro.hpp"
-#include "game.hpp"
-#include <unistd.h>
-using namespace std;
-
-int main() {
-  funkInit();
-  srand(time(NULL));
-
-  Intro();
-  Game(true);
-  
-  funkClose();
-  return 0;
-}
+void Game(bool debug);
