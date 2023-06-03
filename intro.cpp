@@ -1,5 +1,5 @@
 /* COPYRIGHT NOTICE
-  intro     - A large and not-so-vital piece of the termlink program
+  intro     - A not-so-vital piece of the termlink program
   termlink  - A recreation of the terminal hacking minigame from the
               Fallout series, with a sizable portion of personal
               touches
