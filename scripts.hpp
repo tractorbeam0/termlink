@@ -24,5 +24,5 @@
 
 #pragma once
 
-void Game(bool debug);
+void Game();
 void Intro();

@@ -26,11 +26,16 @@
 using namespace std;
 
 int main() {
+  #ifdef DEBUG
+  cout << "Debug flag recognized" << endline;
+  //do all other debug things
+  #endif
+
   funkInit();
   srand(time(NULL));
 
   Intro();
-  Game(true);
+  Game();
   
   funkClose();
   return 0;
