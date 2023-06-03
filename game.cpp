@@ -32,7 +32,7 @@ void Game(bool debug) {
   usleep(3000000);
   slowPrint(0, 0, "Welcome to ROBCO Industries (TM) Termlink");
   
-  if debug {
+  if (debug) {
     slowPrint(0, 1, "**LOGIN SCRIPT ACTIVE** **DEBUG MODE ACTIVE, BEHAVIOR MAY BE UNPREDICTABLE**\n");
   } else {
     slowPrint(0, 1, "**LOGIN SCRIPT ACTIVE**\n\n");
