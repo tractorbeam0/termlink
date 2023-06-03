@@ -20,7 +20,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "termfunk.h"
+#include "termfunk.hpp"
 #include <iostream>
 #include <cmath>
 #include <unistd.h>
