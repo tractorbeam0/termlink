@@ -20,6 +20,7 @@
 
 #define BEEP    '\7'
 #define NULCHAR '\0'
+
 #include <iostream>
 #include <unistd.h>
 #include <sys/ioctl.h>  //funkInit(), to grab terminal size
@@ -28,10 +29,9 @@
 using namespace std;
 
 
+//**Private functions
 
-//**LOCAL (Only used in this source)
-
-extern struct winsize w; //Used specifically for window sizes since ioctl unfortunately won't output to anything but a struct.
+struct winsize w; //Used specifically for window sizes since ioctl unfortunately won't output to anything but a struct.
 
 //Copy & Pasted from cplusplus.com because standard functions don't recognize UTF-8 chars as just 1 character, need it for box drawing, thanks Peter87 (10193)!
 size_t strlen_utf8(const string& str) {
@@ -45,7 +45,7 @@ size_t strlen_utf8(const string& str) {
 }
 
 
-//**PUBLIC (Declared in the header to be used elsewhere)
+//**Public functions
 
 //Usage: int main() {funkInit(); ...}
 // Performs all the actions required to help the functions... y'know, function.

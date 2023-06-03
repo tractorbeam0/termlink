@@ -22,8 +22,7 @@
 //"YOU ARE OUT OF UNIFORM SOLDIER, WHERE IS YOUR POOWHHERR AAHHRRMOR!?"
 
 #include "termfunk.hpp"
-#include "intro.hpp"
-#include "game.hpp"
+#include "scripts.hpp"
 using namespace std;
 
 int main() {

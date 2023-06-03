@@ -27,7 +27,7 @@
 #include <string>
 #include <sys/ioctl.h> //Required to properly declare the w struct.
 
-struct winsize w;
+extern struct winsize w;
 
 //Simple functions (they do a thing, nothing more)
 

@@ -1,6 +1,7 @@
 /* COPYRIGHT NOTICE
-  game.hpp  - game's associated header file
-  game      - The vast majority of the termlink program
+  scripts   - Used to define all of the seperate source files that
+              would only have 1 declaration of their functions if
+              split into seperate per-source headers.
   termlink  - A recreation of the terminal hacking minigame from the
               Fallout series, with a sizable portion of personal
               touches
@@ -24,3 +25,4 @@
 #pragma once
 
 void Game(bool debug);
+void Intro();
