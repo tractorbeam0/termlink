@@ -18,6 +18,8 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+// (The name is a play on words for "termfunc" as in "terminal functions")
+
 #define BEEP    '\7'
 #define NULCHAR '\0'
 
