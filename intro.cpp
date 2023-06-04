@@ -67,7 +67,8 @@ void Intro() {
   
   setCursorPos(0,0);
   for (int i = 0; i < w.ws_row; i++) {
-    for (int i = 0; i < w.ws_col; i+=2) {
+    for (int j = 0; j < w.ws_col; j+=2) {
+      setCursorPos(j,i);
       cout << "─┼";
     }
     cout << flush;
