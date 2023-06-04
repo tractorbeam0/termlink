@@ -33,7 +33,6 @@ void Intro() {
   cursorHide();
   
   //Startup
-  int j = 0;
   for (int i = 0; i < 4; i++) {
     for (int i = 0; i < 7; i++) {
       int linecoord = rand()%w.ws_col;
