@@ -23,6 +23,8 @@
 #include "termfunk.hpp"
 #include <iostream>
 #include <unistd.h>
+#include <sstream>
+#include <string>
 using namespace std;
 
 //Clears everything on the screen *except* the "Welcome to ROBCO..." in an animated manor.
@@ -61,5 +63,27 @@ void Game() {
   usleep(200000);
   slowPrint(0, 4, "Starting Debugger...");
   usleep(400000);
-  slowPrint(0, 4, "Mapping physical RAM...\n");
+  slowPrint(0, 4, "Please wait...\n");
+
+  //These are all the random characters that can appear in-game
+  char garbleTable[24] = {
+    '$','?','_','/','%',
+    '(',')','{','}','[',
+    ']','*',':','!','@',
+    '#','`','"',',','.',
+    '<','>',':','\''
+  };
+
+  //CHANGE ME: These are only for debugging purposes, obviously
+  string passwordTable[9] = {
+    "ONE", "TWO", "THREE",
+    "FOUR", "FIVE", "SIX",
+    "SEVEN", "EIGHT", "NINE"
+  };
+
+  //2 Windows of 12x16 characters, resulting in 192 characters per window, 384 total.
+  //Both windows are generated independently to prevent passwords leaking from one window to the other
+  stringstream tableOne, tableTwo;
+
+  //TODO: choose a random number of passwords, and make a for loop that adds a random password to a random place in either of the streams until both of them have reached 192 characters.
 }
