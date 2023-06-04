@@ -53,6 +53,7 @@ void Intro() {
   cout << flush;
   usleep(100000);
   
+  //Grid
   clearScreen();
   for (int i = 0; i < w.ws_col; i+=2) { //If I could do this without nesting it'd be 100x more readable. *sigh*...
     for (int j = 0; j < w.ws_row; j++) {
@@ -132,7 +133,7 @@ void Intro() {
   clearLine();
   cout << center("Handshake Complete") << flush;
   usleep(500000);
-  cout << "\n" << center("Connected at 600 bits/s") << "\x1b[A" << flush; //last ascii code is essentially an reverse newline
+  cout << "\n" << center("Connected at 600 bits/s") << "\x1b[A" << flush; //last ascii code is essentially a reverse newline
   usleep(400000);
   clearLine();
   cout << center("Host is finishing up...") << flush;
