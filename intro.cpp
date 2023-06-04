@@ -34,7 +34,7 @@ void Intro() {
   
   //Startup
   int j = 0;
-  while (j < 4) {
+  for (int i = 0; i < 4; i++) {
     for (int i = 0; i < 7; i++) {
       int linecoord = rand()%w.ws_col;
       for (int i = 0; i < w.ws_col; i++) {
@@ -42,7 +42,6 @@ void Intro() {
         cout << "█";
       }
     }
-    j++;
     usleep(30000);
   }
   usleep(30000);
@@ -56,28 +55,44 @@ void Intro() {
   usleep(100000);
   
   clearScreen();
-  for (int i = 0; i < w.ws_row * (w.ws_col/2); i++) {
-    cout << " │";
+  for (int i = 0; i < w.ws_col; i+=2) { //If I could do this without nesting it'd be 100x more readable. *sigh*...
+    for (int j = 0; j < w.ws_row; j++) {
+      setCursorPos(i,j);
+      cout << " │";
+    }
+    cout << flush;
+    usleep(2000);
   }
-  cout << flush;
+  usleep(120000);
   
   setCursorPos(0,0);
-  for (int i = 0; i < w.ws_row * (w.ws_col/2); i++) {
-    cout << "─┼";
+  for (int i = 0; i < w.ws_row; i++) {
+    for (int i = 0; i < w.ws_col; i+=2) {
+      cout << "─┼";
+    }
+    cout << flush;
+    usleep(2000);
   }
-  cout << flush;
+  usleep(120000);
+
+  for (int i = 0; i < w.ws_col; i+=2) {
+    for (int j = 0; j < w.ws_row; j++) {
+      setCursorPos(i,j);
+      cout << "──";
+    }
+    cout << flush;
+    usleep(2000);
+  }
+  usleep(120000);
 
   setCursorPos(0,0);
-  for (int i = 0; i < w.ws_row * w.ws_col; i++) {
-    cout << "─";
+  for (int i = 0; i < w.ws_row; i++) {
+    for (int i = 0; i < w.ws_col; i++) {
+      cout << " ";
+    }
+    cout << flush;
+    usleep(2000);
   }
-  cout << flush;
-
-  setCursorPos(0,0);
-  for (int i = 0; i < w.ws_row * w.ws_col; i++) {
-    cout << " ";
-  }
-  cout << flush;
   
   //Wait Screen
   clearScreen();
