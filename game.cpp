@@ -23,6 +23,19 @@
 #include "termfunk.hpp"
 #include <iostream>
 #include <unistd.h>
+using namespace std;
+
+//Clears everything on the screen *except* the "Welcome to ROBCO..." in an animated manor.
+void termClear() {
+  setCursorPos(0,1);
+  for (int i = 2;  i < w.ws_row; i++) {
+    clearLine();
+    cout << '\n' << flush;
+    usleep(16666);
+  }
+  setCursorPos(0,1);
+}
+
 
 void Game() {
   //Smaller Intro with the actual interface.

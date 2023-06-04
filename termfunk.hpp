@@ -36,7 +36,6 @@ void cursorHide();
 void cursorShow();
 void funkClose();
 void funkInit();
-void termClear();
 void clearScreen();
 
 //Complex functions (they require input and can do different things)

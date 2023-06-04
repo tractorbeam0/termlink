@@ -70,7 +70,7 @@ void setCursorPos(int col, int row) {
   printf("\033[%d;%dH",++row,++col);
 }
 
-//...
+// ...
 void clearScreen() {
   for (int i=0; i < w.ws_row; i++) {cout << endl;}
   setCursorPos(0,0); 
@@ -99,6 +99,7 @@ string center(string input) {
   return output.str();
 }
 
+// Simple enough, clears the line above the cursor.
 void clearLine() {
   cout << "\r" << flush;
   for (int i = 0; i < w.ws_col; i++) {
@@ -107,16 +108,7 @@ void clearLine() {
   cout << "\r" << flush;
 }
 
-void termClear() {
-  setCursorPos(0,1);
-  for (int i = 2;  i < w.ws_row; i++) {
-    clearLine();
-    cout << '\n' << flush;
-    usleep(16666);
-  }
-  setCursorPos(0,1);
-}
-
+//Prints a character that will do things such as restablish the cursor to the default.
 void funkClose() {
   cout << "\e[0m" << flush;
 }
