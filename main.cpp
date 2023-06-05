@@ -21,17 +21,39 @@
 
 //"YOU ARE OUT OF UNIFORM SOLDIER, WHERE IS YOUR POOWHHERR AAHHRRMOR!?"
 
+#include <signal.h>
 #include "termfunk.hpp"
 #include "scripts.hpp"
 
-int main() {
+void sigintHandler(int sig_num) {
+  signal(SIGINT, sigintHandler);
+  printf("Ctrl-C Recieved! You're lucky I catch those. Closing properly...");
+  funkClose();
+  exit(0);
+}
 
+int main() {
   funkInit();
   srand(time(NULL));
 
-  Intro();
-  Game();
-  
+  try {
+    signal(SIGINT, sigintHandler);
+    Intro();
+    Game();
+  }
+
+  //May or may not end up seperating this into its own source file.
+  catch (int error) {
+    clearScreen();
+    printf("Fatal error!\n\n");
+    switch (error) {
+      default: printf("(%d) Integer has been thrown, but it is out of index! Unable to determine error.", error);
+    }
+    printf("");
+    funkClose();
+    return error;
+  }
+
   funkClose();
   return 0;
 }

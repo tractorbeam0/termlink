@@ -113,4 +113,5 @@ void clearLine() {
 //Prints a character that will do things such as restablish the cursor to the default.
 void funkClose() {
   cout << "\e[0m" << flush;
+  cursorShow();
 }
