@@ -38,9 +38,9 @@ void sigintHandler(int sig_num) {
 int main() {
   funkInit();
   srand(time(NULL));
+  signal(SIGINT, sigintHandler);
 
   try {
-    signal(SIGINT, sigintHandler);
     Intro();
     Game();
   }
