@@ -39,39 +39,94 @@ void termClear() {
   setCursorPos(0,1);
 }
 
-class table {
+size_t passCount;
+class password {
   public:
-    table() {
-      
-    };
-    string getTable() {
-      if (output.str()[0] == NULCHAR)
-        throw 1000;
-      return output.str();
-    }
+  string content;
+  size_t size;
+  bool inUse;
+
+  password(string input) {
+    size = input.length();
+    content = input;
+    inUse = false;
+    passCount++;
+  }
+  ~password() {
+    totalPasswords--;
+  }
+};
+
+//The size of the password list will change in the future.
+#define PASSWORD_COUNT 4
+class tableGenerate {
+  public:
+  tableGenerate();
+  string tableGet() {
+    if (output.str()[0] == NULCHAR)
+      throw 1000;
+    return output.str();
+  }
+
   private:
-    //The generated table itself
-    stringstream output;
+  //The generated table itself
+  //Declared as a stringstream so it can be contributed to as you would contribute to std::cout (eg with output << string[i];)
+  stringstream output;
 
-    //The size of the table
-    const size_t size = 12*32;
+  //The size of the table
+  const size_t outputSize = 384;
 
-    //Keeps track of which passwords have already been placed in a table
-    bool passwordUsed[4] = {};
+  //Keeps track of which passwords have already been placed in a table
+  bool passwordInUse[PASSWORD_COUNT] = {};
 
-    //The passwords to choose from
-    const string passwords[4] = {
-      "ONE","TWO","THREE","FOUR"
-    };
+  //The passwords to choose from (Make sure to change PASSWORD_COUNT if you add/delete any)
+  const string password[PASSWORD_COUNT] = {
+    "ONE","TWO","THREE","FOUR"
+  };
 
-    //The unimportant garble to choose from
-    const char garble[24] = {
-      '$','?','_','/','%',
-      '(',')','{','}','[',
-      ']','*',':','!','@',
-      '#','`','"',',','.',
-      '<','>',':','\''
-    };
+  //The unimportant garble to choose from
+  const char garble[24] = {
+    '$','?','_','/','%',
+    '(',')','{','}','[',
+    ']','*',':','!','@',
+    '#','`','"',',','.',
+    '<','>',':','\''
+  };
+};
+
+//tableGenerate class constructor, generates the table.
+//Currently going through it's development pass, it will look terrible.
+tableGenerate::tableGenerate() {
+  unsigned random;
+  string passwordGoingToUse[PASSWORD_COUNT] = {};
+  size_t passwordGoingToUseSizeTotal;
+  //Generate the order of passwords to use
+  for (int i; i < PASSWORD_COUNT; i++) {
+    random = rand()%PASSWORD_COUNT;             //I'm having flashbacks of times when this variable wouldn't change across loops... God help me.
+    passwordGoingToUse[i] = password[random];
+    if (passwordInUse[random]) {
+      i--;
+      continue;
+    }
+    passwordInUse[random] = true;
+  }
+  //Determine the size of each password in the array
+  int passwordSize[PASSWORD_COUNT] = {};
+  for (int i; i < PASSWORD_COUNT; i++) {
+    passwordSize[i] = passwordGoingToUse[i].length();
+    passwordGoingToUseSizeTotal += passwordGoingToUse[i].length();
+  }
+
+  //FINALLY building the table
+  for (int i = 0; i < outputSize; i++) {  //For every character that can be placed in the table...
+    unsigned randomGarble = rand()%24;
+    unsigned randomPassword = rand()%PASSWORD_COUNT;
+    if (i < 7) {                          //...make sure the first 7 characters are garble
+      output << garble[randomGarble];
+      continue;
+    }
+
+  }
 };
 
 void Game() {
@@ -99,6 +154,6 @@ void Game() {
   clearLine();
   slowPrint(0, 4, "Please wait...\n");
 
-  table lol;
-  lol.getTable();
+  tableGenerate lol;
+  slowPrint(0, 6, lol.tableGet());
 }

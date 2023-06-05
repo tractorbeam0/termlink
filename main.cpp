@@ -40,12 +40,13 @@ int main() {
   srand(time(NULL));
   signal(SIGINT, sigintHandler);
 
+  //The actual code (Intro skipped for debugging)
   try {
-    Intro();
+    //Intro();
     Game();
   }
 
-  //May or may not end up seperating this into its own source file.
+  //This is the error handler. I may or may not end up seperating this into its own source file.
   catch (int error) {
     clearScreen();
     printf("Fatal error!\n\n");
@@ -56,6 +57,16 @@ int main() {
     printf("\n\nUnable to continue. Cleaning up and exiting...\n");
     funkClose();
     return error;
+  }
+
+  catch (std::string error) {
+    clearScreen();
+    printf("EVEN MORE fatal error!\n\n");
+    printf("Somehow, a string was thrown. Either the debugger is doing it's thing, or something went SERIOSULY wrong.\n");
+    printf("String thrown: %s", error);
+    printf("\n\nUnable to continue. Cleaning up and exiting...\n");
+    funkClose();
+    return 1;
   }
 
   funkClose();
