@@ -20,6 +20,8 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#define PASSWORD_TABLE_SIZE 9
+
 #include "termfunk.hpp"
 #include <iostream>
 #include <unistd.h>
@@ -74,16 +76,23 @@ void Game() {
     '<','>',':','\''
   };
 
-  //CHANGE ME: These are only for debugging purposes, obviously
-  string passwordTable[9] = {
+  //These are only for debugging purposes, CHANGE ME
+  string passwordTable[PASSWORD_TABLE_SIZE] = {
     "ONE", "TWO", "THREE",
     "FOUR", "FIVE", "SIX",
     "SEVEN", "EIGHT", "NINE"
   };
 
-  //2 Windows of 12x16 characters, resulting in 192 characters per window, 384 total.
+  //2 Windows of 12x16 characters, 192 characters per 2 windows represented as stringstreams
   //Both windows are generated independently to prevent passwords leaking from one window to the other
-  stringstream tableOne, tableTwo;
+  stringstream tableLeft, tableRight;
 
-  //TODO: choose a random number of passwords, and make a for loop that adds a random password to a random place in either of the streams until both of them have reached 192 characters.
+  //TODO: Choose a random number of passwords, and make a for loop that adds a random password to a random place in either of the streams until both of them have
+  //      reached 192 characters.
+  
+  string passwordChosen[] = {};
+
+  void generateTable(bool leftright) {
+    
+  }
 }
