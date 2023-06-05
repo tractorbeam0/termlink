@@ -140,6 +140,7 @@ void Intro() {
   cout << center("Host is finishing up...") << flush;
   usleep(1100000);
   
+  //Scrolling the text up...
   for (int i = 0; i <= w.ws_row; i++) {
     cout << "\n" << flush;
     usleep(16666);

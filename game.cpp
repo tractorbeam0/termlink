@@ -75,7 +75,7 @@ class table {
 };
 
 void Game() {
-  //Smaller Intro with the actual interface.
+  clearScreen();
 
   usleep(3000000);
   slowPrint(0, 0, "Welcome to ROBCO Industries (TM) Termlink");

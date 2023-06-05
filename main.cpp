@@ -22,23 +22,26 @@
 //"YOU ARE OUT OF UNIFORM SOLDIER, WHERE IS YOUR POOWHHERR AAHHRRMOR!?"
 
 #include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 #include "termfunk.hpp"
 #include "scripts.hpp"
 
 void sigintHandler(int sig_num) {
   signal(SIGINT, sigintHandler);
-  printf("\n\nCtrl-C Recieved! You're lucky I catch those. Closing properly...\n");
+  printf("\n\nCtrl-C Recieved! You're lucky I catch those. Cleaning up properly...\n");
   funkClose();
   exit(0);
 }
 
-int main() {
+int main(int argc, char** argv) {
   funkInit();
   srand(time(NULL));
 
   try {
     signal(SIGINT, sigintHandler);
-    Intro();
+    if (argv[1] == "--skipintro") {Intro();}
     Game();
   }
 
