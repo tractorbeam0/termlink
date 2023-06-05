@@ -63,7 +63,7 @@ void Intro() {
     cout << flush;
     usleep(2000);
   }
-  usleep(120000);
+  usleep(100000);
   
   setCursorPos(0,0);
   for (int i = 0; i < w.ws_row; i++) {
@@ -74,7 +74,7 @@ void Intro() {
     cout << flush;
     usleep(2000);
   }
-  usleep(120000);
+  usleep(100000);
 
   for (int i = 0; i < w.ws_col; i+=2) {
     for (int j = 0; j < w.ws_row; j++) {
