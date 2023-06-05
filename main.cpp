@@ -35,13 +35,13 @@ void sigintHandler(int sig_num) {
   exit(0);
 }
 
-int main(int argc, char** argv) {
+int main() {
   funkInit();
   srand(time(NULL));
 
   try {
     signal(SIGINT, sigintHandler);
-    if (argv[1] == "--skipintro") {Intro();}
+    Intro();
     Game();
   }
 
