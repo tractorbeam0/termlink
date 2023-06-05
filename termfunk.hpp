@@ -25,6 +25,7 @@
 #define NULCHAR '\0' //it's not as hard to see '\0' as nullchar, this definition might be redundant, *shrug*
 
 #include <sys/ioctl.h> //Required to properly declare the w struct.
+#include <string>
 
 extern struct winsize w;
 
