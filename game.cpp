@@ -20,13 +20,12 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#define PASSWORD_TABLE_SIZE 9
-
 #include "termfunk.hpp"
 #include <iostream>
 #include <unistd.h>
 #include <sstream>
 #include <string>
+#include <vector>
 using namespace std;
 
 //Clears everything on the screen *except* the "Welcome to ROBCO..." in an animated manor.
@@ -40,17 +39,49 @@ void termClear() {
   setCursorPos(0,1);
 }
 
+class table {
+  public:
+    table() {
+      
+    };
+    string getTable() {
+      if (output.str()[0] == NULCHAR)
+        throw 1000;
+      return output.str();
+    }
+  private:
+    //The generated table itself
+    stringstream output;
+
+    //The size of the table
+    const size_t size = 12*32;
+
+    //Keeps track of which passwords have already been placed in a table
+    bool passwordUsed[4] = {};
+
+    //The passwords to choose from
+    const string passwords[4] = {
+      "ONE","TWO","THREE","FOUR"
+    };
+
+    //The unimportant garble to choose from
+    const char garble[24] = {
+      '$','?','_','/','%',
+      '(',')','{','}','[',
+      ']','*',':','!','@',
+      '#','`','"',',','.',
+      '<','>',':','\''
+    };
+};
 
 void Game() {
   //Smaller Intro with the actual interface.
 
-  //Loading debugger's physical RAM viewer, loading the Login program, editing the debugger to display section of RAM with potential password over login program. 
-  //  ^^^Obviously this is fake, it's just that it'll seem even faker if it doesn't sound at least plausible in concept.
   usleep(3000000);
   slowPrint(0, 0, "Welcome to ROBCO Industries (TM) Termlink");
   slowPrint(0, 1, "**LOGIN SCRIPT ACTIVE**\n\n");
   usleep(150000);
-  slowPrint(0, 3, "TERMINAL SET TO MAINTANANCE MODE - Please contact your administrator.\n");
+  slowPrint(0, 3, "TERMINAL SET TO MAINTANANCE MODE - If you don't know what this means, contact your administrator.\n");
   usleep(50000);
   slowPrint(0, 4, "00> LOD 00,7D\n");
   slowPrint(0, 5, "70> LOD E1,FF\n");
@@ -65,34 +96,9 @@ void Game() {
   usleep(200000);
   slowPrint(0, 4, "Starting Debugger...");
   usleep(400000);
+  clearLine();
   slowPrint(0, 4, "Please wait...\n");
 
-  //These are all the random characters that can appear in-game
-  char garbleTable[24] = {
-    '$','?','_','/','%',
-    '(',')','{','}','[',
-    ']','*',':','!','@',
-    '#','`','"',',','.',
-    '<','>',':','\''
-  };
-
-  //These are only for debugging purposes, CHANGE ME
-  string passwordTable[PASSWORD_TABLE_SIZE] = {
-    "ONE", "TWO", "THREE",
-    "FOUR", "FIVE", "SIX",
-    "SEVEN", "EIGHT", "NINE"
-  };
-
-  //2 Windows of 12x16 characters, 192 characters per 2 windows represented as stringstreams
-  //Both windows are generated independently to prevent passwords leaking from one window to the other
-  stringstream tableLeft, tableRight;
-
-  //TODO: Choose a random number of passwords, and make a for loop that adds a random password to a random place in either of the streams until both of them have
-  //      reached 192 characters.
-  
-  string passwordChosen[] = {};
-
-  void generateTable(bool leftright) {
-    
-  }
+  table lol;
+  lol.getTable();
 }

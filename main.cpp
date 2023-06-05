@@ -27,7 +27,7 @@
 
 void sigintHandler(int sig_num) {
   signal(SIGINT, sigintHandler);
-  printf("Ctrl-C Recieved! You're lucky I catch those. Closing properly...");
+  printf("\n\nCtrl-C Recieved! You're lucky I catch those. Closing properly...\n");
   funkClose();
   exit(0);
 }
@@ -47,9 +47,10 @@ int main() {
     clearScreen();
     printf("Fatal error!\n\n");
     switch (error) {
-      default: printf("(%d) Integer has been thrown, but it is out of index! Unable to determine error.", error);
+      case 1000: printf("(%d) Unable to retrieve a table that hasn't been generated yet!", error); break;
+      default  : printf("(%d) An integer has been thrown, but it is out of index! Unable to determine error.", error); break;
     }
-    printf("");
+    printf("\n\nUnable to continue. Cleaning up and exiting...\n");
     funkClose();
     return error;
   }
