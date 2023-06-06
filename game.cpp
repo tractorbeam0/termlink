@@ -39,29 +39,30 @@ void termClear() {
   setCursorPos(0,1);
 }
 
-size_t passCount;
-class password {
+//We ain't ever declaring anything other than "passwords" down there for this class, might as well have fun with the name
+class ThunderCougarFalconBird {
   public:
-  string content;
-  size_t size;
-  bool inUse;
+    void noLongerUsingAny() {
+      //For every element of beingUsed, change it to false.
+    }
+    bool hasBeenUsed(unsigned int i) {
+      return beingUsed[i];
+    }
 
-  password(string input) {
-    size = input.length();
-    content = input;
-    inUse = false;
-    passCount++;
-  }
-  ~password() {
-    totalPasswords--;
-  }
-};
+  private:
+  const vector<string> content {
+    "ONE","TWO","THREE","FOUR"
+  };
+  vector<bool> beingUsed;
+  const size_t total = content.size();
+}passwords;
 
 //The size of the password list will change in the future.
 #define PASSWORD_COUNT 4
 class tableGenerate {
   public:
   tableGenerate();
+
   string tableGet() {
     if (output.str()[0] == NULCHAR)
       throw 1000;
@@ -94,7 +95,7 @@ class tableGenerate {
   };
 };
 
-//tableGenerate class constructor, generates the table.
+//tableGenerate constructor, generates the table.
 //Currently going through it's development pass, it will look terrible.
 tableGenerate::tableGenerate() {
   unsigned random;

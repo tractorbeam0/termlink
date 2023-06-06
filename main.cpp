@@ -42,7 +42,7 @@ int main() {
 
   //The actual code (Intro skipped for debugging)
   try {
-    //Intro();
+    Intro();
     Game();
   }
 
