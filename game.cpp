@@ -39,8 +39,7 @@ void termClear() {
   setCursorPos(0,1);
 }
 
-//We ain't ever declaring anything other than "passwords" down there for this class, might as well have fun with the name
-class ThunderCougarFalconBird {
+class Singleton {
   public:
     void noLongerUsingAny() {
       //For every element of beingUsed, change it to false.
