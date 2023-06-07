@@ -42,18 +42,18 @@ void termClear() {
 class Singleton {
   public:
     void noLongerUsingAny() {
-      //For every element of beingUsed, change it to false.
+      beingUsed.clear();
     }
     bool hasBeenUsed(unsigned int i) {
       return beingUsed[i];
     }
 
   private:
+  const size_t total = content.size();
   const vector<string> content {
     "ONE","TWO","THREE","FOUR"
   };
   vector<bool> beingUsed;
-  const size_t total = content.size();
 }passwords;
 
 //The size of the password list will change in the future.
