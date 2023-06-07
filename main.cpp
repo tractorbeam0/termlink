@@ -59,16 +59,6 @@ int main() {
     return error;
   }
 
-  //Used primarily just to see the output of something for debugging. Should never happen in prod.
-  catch (std::string debugError) {
-    clearScreen();
-    printf("Exception!\n\n");
-    printf("A string was thrown. This shouldn't normally happen at all. The string in question:\n\n%s", debugError);
-    printf("\nUnable to continue. Cleaning up and exiting...\n");
-    funkClose();
-    return 1;
-  }
-
   funkClose();
   return 0;
 }

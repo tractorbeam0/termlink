@@ -65,7 +65,7 @@ class Singleton {
 string tableGenerate() {
   const string garble = "$?_/%(){}[]*:!@#`\",.<>:'"; //24 characters total.
   
-  struct Singleton {
+  struct SingletonTwo {
     size_t length = 15;
     size_t height = 12;
     size_t area = length * height;
@@ -134,5 +134,5 @@ void Game() {
   clearLine();
   slowPrint(0, 4, "Please wait...\n");
   
-  throw tableGenerate();
+  cout << tableGenerate();
 }
