@@ -42,14 +42,14 @@ int main() {
 
   //The actual code (Intro skipped for debugging)
   try {
-    Intro();
+    //Intro();
     Game();
   }
 
   //This is the error handler. I may or may not end up seperating this into its own source file.
   catch (int error) {
     clearScreen();
-    printf("Fatal error!\n\n");
+    printf("Exception!\n\n");
     switch (error) {
       case 1000: printf("(%d) Unable to retrieve a table that hasn't been generated yet!", error); break;
       default  : printf("(%d) An integer has been thrown, but it is out of index! Unable to determine error.", error); break;
@@ -57,6 +57,16 @@ int main() {
     printf("\n\nUnable to continue. Cleaning up and exiting...\n");
     funkClose();
     return error;
+  }
+
+  //Used primarily just to see the output of something for debugging. Should never happen in prod.
+  catch (std::string debugError) {
+    clearScreen();
+    printf("Exception!\n\n");
+    printf("A string was thrown. This shouldn't normally happen at all. The string in question:\n\n%s", debugError);
+    printf("\nUnable to continue. Cleaning up and exiting...\n");
+    funkClose();
+    return 1;
   }
 
   funkClose();
