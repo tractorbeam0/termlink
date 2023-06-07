@@ -59,16 +59,6 @@ int main() {
     return error;
   }
 
-  catch (std::string error) {
-    clearScreen();
-    printf("EVEN MORE fatal error!\n\n");
-    printf("Somehow, a string was thrown. Either the debugger is doing it's thing, or something went SERIOSULY wrong.\n");
-    printf("String thrown: %s", error);
-    printf("\n\nUnable to continue. Cleaning up and exiting...\n");
-    funkClose();
-    return 1;
-  }
-
   funkClose();
   return 0;
 }

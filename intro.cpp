@@ -27,6 +27,8 @@
 #include <sys/ioctl.h>
 using namespace std;
 
+ //If I could do this without nesting a shit ton of for loops it'd be 100x more readable. *sigh*...
+
 void Intro() {
 
   usleep(2401000); //Dramatic pause...
@@ -55,7 +57,7 @@ void Intro() {
   
   //Grid
   clearScreen();
-  for (int i = 0; i < w.ws_col; i+=2) { //If I could do this without nesting it'd be 100x more readable. *sigh*...
+  for (int i = 0; i < w.ws_col; i+=2) {
     for (int j = 0; j < w.ws_row; j++) {
       setCursorPos(i,j);
       cout << " │";
@@ -99,7 +101,7 @@ void Intro() {
   clearScreen();
   usleep(1000000);
   cout << "PLEASE WAIT..." << flush;
-  usleep(2300000);
+  usleep(2000000);
   
   //Wait Screen, post ascii init
   clearScreen();

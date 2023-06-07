@@ -23,7 +23,7 @@
 #include "termfunk.hpp"
 #include <iostream>
 #include <unistd.h>
-#include <sstream>
+#include <math.h>
 #include <string>
 #include <vector>
 using namespace std;
@@ -39,95 +39,62 @@ void termClear() {
   setCursorPos(0,1);
 }
 
+//NONE OF THIS UNTIL THE GAME FUNCTION HAS BEEN TESTED. It's still being developed in bulk.
 class Singleton {
   public:
-    void noLongerUsingAny() {
-      beingUsed.clear();
-    }
-    bool hasBeenUsed(unsigned int i) {
-      return beingUsed[i];
-    }
+  vector<bool> inUse;
+  size_t population;
+  vector<string> content;
 
-  private:
-  const size_t total = content.size();
-  const vector<string> content {
-    "ONE","TWO","THREE","FOUR"
-  };
-  vector<bool> beingUsed;
-}passwords;
+  Singleton(vector<string> input) {
+    population = input.size();
+    content = input;
+  }
+    
+  int getRandom() {
+    unsigned r = rand()%population;
+    if (!inUse[r]) {
+      inUse[r] = true;
+      return r;
+    } else getRandom();
+  }
+} password({"ONE","TWO","THREE","FOUR","FIVE"});
 
-//The size of the password list will change in the future.
-#define PASSWORD_COUNT 4
-class tableGenerate {
-  public:
-  tableGenerate();
+//tableGenerate generates the wall of text that includes some potential passwords.
+string tableGenerate() {
+  const string garble = "$?_/%(){}[]*:!@#`\",.<>:'"; //Yes, I know it won't include the \, it's there to protect the ".
+  
+  string tableBuffer;
+  
+  struct Singleton {
+    size_t length = 15;
+    size_t height = 12;
+    size_t area = length * height;
+  } tableSize;
 
-  string tableGet() {
-    if (output.str()[0] == NULCHAR)
-      throw 1000;
-    return output.str();
+  //Generating this in advance so we can tell how many characters in the table will be used by passwords.
+  vector<int> toBeUsed;
+  unsigned numOfUsedChars;
+  unsigned coord;
+  int n = round(password.population/2); //For some reason trying to get a random integer between 0.5 and 1.0 of password.population only works if I seperate that into an int *before* modulating it with rand(). Oh well.
+  for (int i = 0; i < password.population - (rand()% n); i++) {
+    coord = password.getRandom();
+    numOfUsedChars += password.content[coord].length();
+    toBeUsed.push_back(coord);
   }
 
-  private:
-  //The generated table itself
-  //Declared as a stringstream so it can be contributed to as you would contribute to std::cout (eg with output << string[i];)
-  stringstream output;
-
-  //The size of the table
-  const size_t outputSize = 384;
-
-  //Keeps track of which passwords have already been placed in a table
-  bool passwordInUse[PASSWORD_COUNT] = {};
-
-  //The passwords to choose from (Make sure to change PASSWORD_COUNT if you add/delete any)
-  const string password[PASSWORD_COUNT] = {
-    "ONE","TWO","THREE","FOUR"
-  };
-
-  //The unimportant garble to choose from
-  const char garble[24] = {
-    '$','?','_','/','%',
-    '(',')','{','}','[',
-    ']','*',':','!','@',
-    '#','`','"',',','.',
-    '<','>',':','\''
-  };
-};
-
-//tableGenerate constructor, generates the table.
-//Currently going through it's development pass, it will look terrible.
-tableGenerate::tableGenerate() {
-  unsigned random;
-  string passwordGoingToUse[PASSWORD_COUNT] = {};
-  size_t passwordGoingToUseSizeTotal;
-  //Generate the order of passwords to use
-  for (int i; i < PASSWORD_COUNT; i++) {
-    random = rand()%PASSWORD_COUNT;             //I'm having flashbacks of times when this variable wouldn't change across loops... God help me.
-    passwordGoingToUse[i] = password[random];
-    if (passwordInUse[random]) {
-      i--;
-      continue;
-    }
-    passwordInUse[random] = true;
-  }
-  //Determine the size of each password in the array
-  int passwordSize[PASSWORD_COUNT] = {};
-  for (int i; i < PASSWORD_COUNT; i++) {
-    passwordSize[i] = passwordGoingToUse[i].length();
-    passwordGoingToUseSizeTotal += passwordGoingToUse[i].length();
+  //Find out where to put the passwords in the table (for now it will just distribute them evenly)
+  for (int i : toBeUsed) {
+    
   }
 
-  //FINALLY building the table
-  for (int i = 0; i < outputSize; i++) {  //For every character that can be placed in the table...
-    unsigned randomGarble = rand()%24;
-    unsigned randomPassword = rand()%PASSWORD_COUNT;
-    if (i < 7) {                          //...make sure the first 7 characters are garble
-      output << garble[randomGarble];
-      continue;
-    }
-
+  //Finally go about building the table.
+  for (int i = 0; i < tableSize.area; i++) {
+    
   }
-};
+
+  return tableBuffer;
+}
 
 void Game() {
   clearScreen();
@@ -136,7 +103,7 @@ void Game() {
   slowPrint(0, 0, "Welcome to ROBCO Industries (TM) Termlink");
   slowPrint(0, 1, "**LOGIN SCRIPT ACTIVE**\n\n");
   usleep(150000);
-  slowPrint(0, 3, "TERMINAL SET TO MAINTANANCE MODE - If you don't know what this means, contact your administrator.\n");
+  slowPrint(0, 3, "TERMINAL SET TO MAINTANANCE MODE - Contact your administrator.\n");
   usleep(50000);
   slowPrint(0, 4, "00> LOD 00,7D\n");
   slowPrint(0, 5, "70> LOD E1,FF\n");
@@ -153,7 +120,6 @@ void Game() {
   usleep(400000);
   clearLine();
   slowPrint(0, 4, "Please wait...\n");
+  
 
-  tableGenerate lol;
-  slowPrint(0, 6, lol.tableGet());
 }

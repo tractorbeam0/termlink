@@ -26,7 +26,6 @@
 #include <iostream>
 #include <unistd.h>
 #include <sys/ioctl.h>  //funkInit(), to grab terminal size
-#include <sstream>      //slowPrint(), center()
 #include <cmath>        //center()
 using namespace std;
 
@@ -35,7 +34,7 @@ using namespace std;
 
 struct winsize w; //Used specifically for window sizes since ioctl unfortunately won't output to anything but a struct.
 
-//Copy & Pasted from cplusplus.com because standard functions don't recognize UTF-8 chars as just 1 character, need it for box drawing, thanks Peter87 (10193)!
+//Copy & Pasted from cplusplus.com because standard functions don't recognize UTF-8 chars as just 1 character, need it for box drawing with center(), thanks Peter87 (10193)!
 size_t strlen_utf8(const string& str) {
   size_t length = 0;
   for (char c : str) {
@@ -91,14 +90,14 @@ void slowPrint(int x, int y, string input) {
 } 
 
 //Usage: cout << center("Hello World!");
-// Returns a string with the proper number of spaces to appear at the center of the screen when printed.
+// Returns the string with the proper number of whitespace to appear at the center of the screen when printed.
 string center(string input) {
-  stringstream output;
+  string output;
   for (int i = 0; i < round(round(w.ws_col/2) - strlen_utf8(input) / 2); i++) {
-    output << " ";
+    output += ' ';
   }
-  output << input;
-  return output.str();
+  output += input;
+  return output;
 }
 
 // Simple enough, clears the line above the cursor.
