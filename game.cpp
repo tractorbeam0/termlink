@@ -39,8 +39,6 @@ void termClear() {
   setCursorPos(0,1);
 }
 
-//NONE OF THIS UNTIL THE GAME FUNCTION HAS BEEN TESTED. It's still being developed in bulk.
-// Side note: Thank the heavens for intellisense, this function would never get finished this way if it weren't for that telling me what would go wrong
 class Singleton {
   public:
   vector<bool> inUse;
@@ -52,68 +50,69 @@ class Singleton {
     content = input;
   }
     
-  int getRandom() {
+  string getRandomPassword() {
     unsigned r = rand()%population;
     if (!inUse[r]) {
       inUse[r] = true;
-      return r;
-    } else getRandom();
+      return content[r];
+    } else getRandomPassword(); //Statistically, function recursion that exits based on a rand() can indefinately hang. Fun! May or may not be the segfault...
   }
 } password({"ONE","TWO","THREE","FOUR","FIVE"});
 
-//tableGenerate generates the wall of text that includes some potential passwords.
+//tableGenerate returns the wall of text that includes some potential passwords. Should return 180 characters, one for each individual table.
 string tableGenerate() {
-  const string garble = "$?_/%(){}[]*:!@#`\",.<>:'"; //24 characters total.
-  
-  struct SingletonTwo {
-    size_t length = 15;
-    size_t height = 12;
-    size_t area = length * height;
+  const size_t length = 15;
+  const size_t height = 12;
+  const size_t area = length * height;
+  const string garble = "$?_/%(){}[]*:!@#`\"\\,.<>:'";
 
-    vector<int> coordStore;
-    unsigned charsBeforeNextPassword;
-    unsigned charsReservedToPasswords;
-    string result;
-  } table;
+  string result;
 
-  //  Generating this in advance so we can tell how many characters in the table will be used by passwords.
-  unsigned coordStoreTmp;
-  //For some reason trying to get a random integer between 50% and 100% of whatever int is in password.population only works if I seperate
-  //that into an int *before* modulating it with rand. Oh well, at least it makes the for loop more efficient.
-  unsigned n = round(password.population/2);
-  for (int i = 0; i < password.population - (rand()% n); i++) {
 
-    coordStoreTmp = password.getRandom();
+  //----Prepare the order of the passwords
+  unsigned tmp;
+  //Anywhere between 0 and half of password.population, as not to use all of the passwords *sometimes*.
+  tmp  = round(password.population/2);
+  tmp %= rand();
+  tmp  = password.population - tmp;
 
-    table.charsReservedToPasswords += password.content[coordStoreTmp].length();
-    table.coordStore.push_back(coordStoreTmp);
+  vector<string> passwordsInOrder;
+  for (int i = 0; i < tmp; i++) {
+    passwordsInOrder.push_back(password.getRandomPassword());
   }
 
-  //  Find out where to put the passwords in the table (for now it will just distribute them evenly)
+  //----And lay out the table for the passwords
   int i = 0;
-  for (int coord : table.coordStore) {
+  for (string password : passwordsInOrder) {
     i++;
-    //God forgive me for what I'm about to do (it's the math that evenly distributes the passwords)
-    //It evaluates the number of characters before the center of that password, subtracted by half the length of the password that's going in.
-    table.charsBeforeNextPassword = i*(round(table.area / table.coordStore.size())) - round(password.content[coord].length() / 2);
-    
-    //Add the proper amount of garble characters
-    for (int i = 0; i < table.charsBeforeNextPassword; i++) {
-      table.result += garble[rand()%garble.length()];
-    }
 
-    //And FINALLY insert the password
-    table.result += password.content[coord];
+    //I *eventually* came across the revelation that math should be evaluated like this and not in a single line... eventually.
+    unsigned charsBeforeNextPassword;
+    float tmp;
+    tmp  = area / passwordsInOrder.size();
+    tmp *= i;
+    tmp -= result.length();
+    tmp -= 0.5 * password.length();
+    //Properly rounding it down into an int
+    charsBeforeNextPassword = floor(tmp);
+
+
+    //Insert the garble...
+    for (int i = 0; i < charsBeforeNextPassword; i++) {
+      result += garble[rand()%garble.length()];
+    }
+    //...and insert the password
+    result += password;
   }
 
-  return table.result;
+  return result;
 }
 
 void Game() {
-  //Scrolling the text up...
   #ifdef DEBUG
   cursorHide(); //Debug builds skip the intro, so this is needed to make the cursorShow down there not redundant. No, I don't care whether it matters.
   #endif
+  //Fancily scrolling the text up and off the screen...
   for (int i = 0; i <= w.ws_row; i++) {
     cout << "\n" << flush;
     usleep(16666);
