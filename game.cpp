@@ -110,7 +110,16 @@ string tableGenerate() {
 }
 
 void Game() {
-  clearScreen();
+  //Scrolling the text up...
+  #ifdef DEBUG
+  cursorHide(); //Debug builds skip the intro, so this is needed to make the cursorShow down there not redundant. No, I don't care whether it matters.
+  #endif
+  for (int i = 0; i <= w.ws_row; i++) {
+    cout << "\n" << flush;
+    usleep(16666);
+  }
+  setCursorPos(0,0);
+  cursorShow();
 
   usleep(3000000);
   slowPrint(0, 0, "Welcome to ROBCO Industries (TM) Termlink");
