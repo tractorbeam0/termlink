@@ -82,7 +82,7 @@ void clearScreen() {
 // Change the usleep down there if you want it to be faster, but be prepared to do the math.
 void slowPrint(int x, int y, string input) {
   y++;
-  for (int i=0; input[i] !=NULCHAR; i++) {
+  for (int i=0; input[i]!=NULCHAR; i++) {
     setCursorPos(++x,y);
     cout << "\033[" << y << ";" << x << "H" << input[i] << flush;
     usleep(16666);
