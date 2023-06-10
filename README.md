@@ -1,5 +1,5 @@
 # termlink
-*(This is under construction! As of* ***6/3/23*** *it doesn't even contain anything more than a cool intro)*
+*THIS IS THE DEVELOPMENT BRANCH. It's specifically reserved for source code that either doesn't compile or doesn't run correctly (eg segfault). I will merge with main whenever that doesn't happen.*
 
 A recreation of the terminal hacking minigame from the Fallout series, with a sizable portion of personal touches.
 
