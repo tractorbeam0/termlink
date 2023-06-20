@@ -83,9 +83,8 @@ string tableGenerate() {
   }
 
   //----And lay out the table for the passwords
-  int i = 0;
-  for (string password : passwordsInOrder) {
-    i++;
+  for (int i = 0; i < passwordsInOrder.size(); i++) {
+    string password = passwordsInOrder[i];
 
     //I *eventually* came across the revelation that math should be evaluated like this and not in a single line... eventually.
     unsigned charsBeforeNextPassword;
@@ -93,11 +92,14 @@ string tableGenerate() {
     tmp  = area / passwordsInOrder.size();
     tmp *= i;
     tmp -= result.length();
-    tmp -= 0.5 * password.length();
+    if (i+1 == passwordsInOrder.size()) {
+      tmp -= password.length();
+    } else {
+      tmp -= 0.5 * password.length();
+    }
     //Properly rounding it down into an int
     charsBeforeNextPassword = floor(tmp);
-
-
+    
     //Insert the garble...
     for (int i = 0; i < charsBeforeNextPassword; i++) {
       result += garble[rand()%garble.length()];
