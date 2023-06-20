@@ -39,25 +39,26 @@ void termClear() {
   setCursorPos(0,1);
 }
 
+bool *inUse;
 class Singleton {
   public:
-  vector<bool> inUse;
   vector<string> content;
-  size_t population = content.size();
+  size_t population;
 
   Singleton(vector<string> input) {
+    inUse = new bool[input.size()];
     population = input.size();
     content = input;
   }
-    
-  string getRandomPassword() {
+
+  string getRandom() {
     unsigned r = rand()%population;
-    if (!inUse[r]) {
+    if (inUse[r] == false) {
       inUse[r] = true;
       return content[r];
-    } else getRandomPassword(); //Statistically, function recursion that exits based on a rand() can indefinately hang. Fun! May or may not be the segfault...
-  }
-} password({"ONE","TWO","THREE","FOUR","FIVE"});
+    } else getRandom();
+  }//Statistically, function recursion that returns based on a rand() can indefinately hang. Fun!
+} password({"THERE","IS","NO","WAY","THAT","A","BEE","SHOULD","BE","ABLE","TO","FLY"});
 
 //tableGenerate returns the wall of text that includes some potential passwords. Should return 180 characters, one for each individual table.
 string tableGenerate() {
@@ -78,7 +79,7 @@ string tableGenerate() {
 
   vector<string> passwordsInOrder;
   for (int i = 0; i < tmp; i++) {
-    passwordsInOrder.push_back(password.getRandomPassword());
+    passwordsInOrder.push_back(password.getRandom());
   }
 
   //----And lay out the table for the passwords
@@ -105,6 +106,12 @@ string tableGenerate() {
     result += password;
   }
 
+  //Final check...
+  if (result.size() != area) {
+    //throw 1000;
+  }
+
+  delete[] inUse;
   return result;
 }
 
@@ -142,5 +149,7 @@ void Game() {
   clearLine();
   slowPrint(0, 4, "Please wait...\n");
   
-  cout << tableGenerate();
+  auto temporary = tableGenerate();
+  printf("Table Size: %ld\n", temporary.size());
+  printf("Table Contents: %s\n\n", temporary.c_str());
 }

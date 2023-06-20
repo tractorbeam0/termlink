@@ -3,6 +3,7 @@ termlink:
 
 debug:
 	g++ *.cpp -g -DDEBUG
+	./a.out
 
-cleanup:
+clean:
 	rm *.s *.o a.out termlink
