@@ -39,35 +39,40 @@ void termClear() {
   setCursorPos(0,1);
 }
 
-bool *inUse;
-class Singleton {
-  public:
-  vector<string> content;
-  size_t population;
-
-  Singleton(vector<string> input) {
-    inUse = new bool[input.size()];
-    population = input.size();
-    content = input;
-  }
-
-  string getRandom() {
-    unsigned r = rand()%population;
-    if (inUse[r] == false) {
-      inUse[r] = true;
-      return content[r];
-    } else getRandom();
-  }//Statistically, function recursion that returns based on a rand() can indefinately hang. Fun!
-} password({"THERE","IS","NO","WAY","THAT","A","BEE","SHOULD","BE","ABLE","TO","FLY"});
-
 //tableGenerate returns the wall of text that includes some potential passwords. Should return 180 characters, one for each individual table.
 string tableGenerate() {
+  string result;
   const size_t length = 15;
   const size_t height = 12;
   const size_t area = length * height;
   const string garble = "$?_/%(){}[]*:!@#`\"\\,.<>:'";
 
-  string result;
+  class Singleton {
+    public:
+    vector<string> content;
+    size_t population;
+    bool* inUse;
+
+    Singleton(vector<string> input) {
+      inUse = new bool[input.size()];
+      for (int i = 0; i < input.size(); i++) {
+        inUse[i] = false;
+      }
+      population = input.size();
+      content = input;
+    }
+
+    string getRandom() {
+      unsigned r;
+      while (true) {
+        r = rand()%population;
+        if (*(inUse + r) == false) {
+          *(inUse + r) = true;
+          return content[r];
+        }
+      }
+    }
+  } password({"THERE","IS","NO","WAY","THAT","A","BEE","SHOULD","BE","ABLE","TO","FLY"});
 
 
   //----Prepare the order of the passwords
@@ -90,12 +95,12 @@ string tableGenerate() {
     unsigned charsBeforeNextPassword;
     float tmp;
     tmp  = area / passwordsInOrder.size();
-    tmp *= i;
+    tmp *= i+1;
     tmp -= result.length();
     if (i+1 == passwordsInOrder.size()) {
       tmp -= password.length();
     } else {
-      tmp -= 0.5 * password.length();
+      tmp -= (0.5 * password.length());
     }
     //Properly rounding it down into an int
     charsBeforeNextPassword = floor(tmp);
@@ -110,10 +115,9 @@ string tableGenerate() {
 
   //Final check...
   if (result.size() != area) {
-    //throw 1000;
+    throw 1000;
   }
 
-  delete[] inUse;
   return result;
 }
 
