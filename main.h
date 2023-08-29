@@ -1,7 +1,8 @@
 /* COPYRIGHT NOTICE
+	main.h    - main's header file
 	termlink  - A recreation of the terminal hacking minigame from the
-				Fallout series, with a sizable portion of personal
-				touches
+							Fallout series, with a sizable portion of personal
+							touches
 
 	Copyright (C) 2023  Gavin Mitchell
 
@@ -19,19 +20,7 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//"YOU ARE OUT OF UNIFORM SOLDIER, WHERE IS YOUR POOWHHERR AAHHRRMOR!?"
+#pragma once
 
-#include "termfunk.h"
-#include "main.h"
-
-int main() {
-
-	funkInit();
-	srand(time(NULL));
-
-	Intro();
-	Game();
-	
-	funkClose();
-	return 0;
-}
+void Game();
+void Intro();
