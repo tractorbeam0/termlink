@@ -27,7 +27,7 @@
 #include <sys/ioctl.h>
 using namespace std;
 
- //If I could do this without nesting a shit ton of for loops it'd be 100x more readable. *sigh*...
+//If I could do the startup flash without nesting so many for loops it'd be 100x more readable. *sigh*...
 
 void Intro() {
 

@@ -31,12 +31,10 @@
 void sigintHandler(int sig_num) {
 	signal(SIGINT, sigintHandler);
 	printf("\n\nInturrupt handled. Cleaning up properly...\n");
-	funkClose();
 	exit(0);
 }
 
 int main() {
-	funkInit();
 	srand(time(NULL));
 	signal(SIGINT, sigintHandler);
 
@@ -50,17 +48,15 @@ int main() {
 
 	//This is the error handler. I may or may not end up seperating this into its own source file.
 	catch (int error) {
-		clearScreen();
+		t.clearScreen();
 		printf("Exception!\n\n");
 		switch (error) {
 			case 1000: printf("(%d) The programmer is bad at math! (The generated table is not the expected size, and thus cannot render correctly)", error); break;
 			default  : printf("(%d) An integer has been thrown, but it is out of index! Unable to determine error.", error); break;
 		}
 		printf("\n\nUnable to continue. Cleaning up and exiting...\n");
-		funkClose();
 		return error;
 	}
 
-	funkClose();
 	return 0;
 }
