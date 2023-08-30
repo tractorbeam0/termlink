@@ -1,7 +1,5 @@
 /* COPYRIGHT NOTICE
-  scripts   - Used to define all of the seperate source files that
-              would only have 1 declaration of their functions if
-              split into seperate per-source headers.
+  main.h     - The header file for main.cpp
   termlink  - A recreation of the terminal hacking minigame from the
               Fallout series, with a sizable portion of personal
               touches

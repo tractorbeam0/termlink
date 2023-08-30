@@ -30,13 +30,13 @@
 
 //Clears everything on the screen *except* the "Welcome to ROBCO..." in an animated manor.
 void termClear() {
-	t.setCursorPos(0,1);
-	for (int i = 2;  i < t.TermPos.ws_row; i++) {
-		t.clearLine();
+	term.setCursorPos(0,1);
+	for (int i = 2; i < term.TermPos.ws_row; i++) {
+		term.clearLine();
 		std::cout << '\n' << std::flush;
 		usleep(16666);
 	}
-	t.setCursorPos(0,1);
+	term.setCursorPos(0,2);
 }
 
 struct Singleton {
@@ -125,36 +125,40 @@ void Game() {
 	cursorHide(); //Debug builds skip the intro, so this is needed to make the cursorShow down there not redundant. No, I don't care whether it matters.
 	#endif
 	//Fancily scrolling the text up and off the screen...
-	for (int i = 0; i <= t.TermPos.ws_row; i++) {
+	for (int i = 0; i <= term.TermPos.ws_row; i++) {
 		std::cout << "\n" << std::flush;
 		usleep(16666);
 	}
-	t.setCursorPos(0,0);
-	t.cursorShow();
+	term.setCursorPos(0,0);
+	term.cursorShow();
 
 	usleep(3000000);
-	t.slowPrint(0, 0, "Welcome to ROBCO Industries (TM) Termlink");
-	t.slowPrint(0, 1, "**LOGIN SCRIPT ACTIVE**\n\n");
+	term.slowPrint("Welcome to ROBCO Industries (TM) Termlink");
+	term.slowPrint("**LOGIN SCRIPT ACTIVE**\n\n");
 	usleep(150000);
-	t.slowPrint(0, 3, "TERMINAL SET TO MAINTANANCE MODE - Contact your administrator.\n");
+	term.slowPrint("TERMINAL SET TO MAINTANANCE MODE - Contact your administrator.");
+	term.setCursorPos(0, 2);
+	term.slowPrint("((HOOKED!))\n\n");
 	usleep(50000);
-	t.slowPrint(0, 4, "00> LOD 00,7D\n");
-	t.slowPrint(0, 5, "70> LOD E1,FF\n");
-	t.slowPrint(0, 6, "78> INS 69, 00 5F 4B D8 A7 01\n");
-	t.slowPrint(0, 7, "79> INS 6A, FF 4D 0A AA 6B 4F\n");
-	t.slowPrint(0, 8, "7A> INS 6B, 07 55 7C 3E D1 1F\n");
-	t.slowPrint(0, 9, "7B> //CODE INJECTION COMPLETE\n");
-	t.slowPrint(0,10, "7B> RUN E1\n");
+	term.slowPrint("00> LOD 00,7D\n");
+	term.slowPrint("70> LOD E1,FF\n");
+	term.slowPrint("78> INS 69, 00 5F 4B D8 A7 01\n");
+	term.slowPrint("79> INS 6A, FF 4D 0A AA 6B 4F\n");
+	term.slowPrint("7A> INS 6B, 07 55 7C 3E D1 1F\n");
+	term.slowPrint("7B> //CODE INJECTION COMPLETE\n");
+	term.slowPrint("7B> RUN E1\n");
 	usleep(520000);  
 	termClear();
-	t.slowPrint(0, 2, "Password Required\n\n");
+	term.slowPrint("Password Required\n\n");
 	usleep(200000);
-	t.slowPrint(0, 4, "Starting Debugger...");
+	term.slowPrint("Starting Debugger...");
 	usleep(400000);
-	t.clearLine();
-	t.slowPrint(0, 4, "Please wait...\n");
+	term.clearLine();
+	term.slowPrint("Please wait...\n");
 	
+	/*
 	auto temporary = tableGenerate();
 	printf("Table Size: %ld\n", temporary.size());
 	printf("Table Contents: %s\n\n", temporary.c_str());
+	*/
 }

@@ -25,8 +25,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "termfunk.h"
+
 #include "main.h"
+#include "termfunk.h"
 
 void sigintHandler(int sig_num) {
 	signal(SIGINT, sigintHandler);
@@ -48,7 +49,7 @@ int main() {
 
 	//This is the error handler. I may or may not end up seperating this into its own source file.
 	catch (int error) {
-		t.clearScreen();
+		term.clearScreen();
 		printf("Exception!\n\n");
 		switch (error) {
 			case 1000: printf("(%d) The programmer is bad at math! (The generated table is not the expected size, and thus cannot render correctly)", error); break;

@@ -20,26 +20,28 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "termfunk.h"
 #include <iostream>
 #include <cmath>
 #include <unistd.h>
 #include <sys/ioctl.h>
+
+#include "termfunk.h"
+
 using namespace std;
 
 //If I could do the startup flash without nesting so many for loops it'd be 100x more readable. *sigh*...
 
 void Intro() {
 
+	term.cursorHide();
 	usleep(2401000); //Dramatic pause...
-	cursorHide();
 	
 	//Startup
 	for (int i = 0; i < 4; i++) {
 		for (int i = 0; i < 7; i++) {
-			int linecoord = rand()%w.ws_col;
-			for (int i = 0; i < w.ws_col; i++) {
-				setCursorPos(i, linecoord);
+			int linecoord = rand()%term.TermSize.ws_col;
+			for (int i = 0; i < term.TermSize.ws_col; i++) {
+				term.setCursorPos(i, linecoord);
 				cout << "█";
 			}
 		}
@@ -48,18 +50,18 @@ void Intro() {
 	usleep(30000);
 	
 	//White screen
-	setCursorPos(0,0);
-	for (int i = 0; i < w.ws_row * w.ws_col; i++) {
+	term.setCursorPos(0,0);
+	for (int i = 0; i < term.TermSize.ws_row * term.TermSize.ws_col; i++) {
 		cout << "█";
 	}
 	cout << flush;
 	usleep(100000);
 	
 	//Vertical lines
-	clearScreen();
-	for (int i = 0; i < w.ws_col; i+=2) {
-		for (int j = 0; j < w.ws_row; j++) {
-			setCursorPos(i,j);
+	term.clearScreen();
+	for (int i = 0; i < term.TermSize.ws_col; i+=2) {
+		for (int j = 0; j < term.TermSize.ws_row; j++) {
+			term.setCursorPos(i,j);
 			cout << " │";
 		}
 		cout << flush;
@@ -68,10 +70,10 @@ void Intro() {
 	usleep(100000);
 	
 	//Grid
-	setCursorPos(0,0);
-	for (int i = 0; i < w.ws_row; i++) {
-		for (int j = 0; j < w.ws_col; j+=2) {
-			setCursorPos(j,i);
+	term.setCursorPos(0,0);
+	for (int i = 0; i < term.TermSize.ws_row; i++) {
+		for (int j = 0; j < term.TermSize.ws_col; j+=2) {
+			term.setCursorPos(j,i);
 			cout << "─┼";
 		}
 		cout << flush;
@@ -80,9 +82,9 @@ void Intro() {
 	usleep(100000);
 
 	//Horizontal lines
-	for (int i = 0; i < w.ws_col; i+=2) {
-		for (int j = 0; j < w.ws_row; j++) {
-			setCursorPos(i,j);
+	for (int i = 0; i < term.TermSize.ws_col; i+=2) {
+		for (int j = 0; j < term.TermSize.ws_row; j++) {
+			term.setCursorPos(i,j);
 			cout << "──";
 		}
 		cout << flush;
@@ -90,9 +92,9 @@ void Intro() {
 	}
 	usleep(120000);
 
-	setCursorPos(0,0);
-	for (int i = 0; i < w.ws_row; i++) {
-		for (int i = 0; i < w.ws_col; i++) {
+	term.setCursorPos(0,0);
+	for (int i = 0; i < term.TermSize.ws_row; i++) {
+		for (int i = 0; i < term.TermSize.ws_col; i++) {
 			cout << " ";
 		}
 		cout << flush;
@@ -100,55 +102,55 @@ void Intro() {
 	}
 	
 	//Wait Screen
-	clearScreen();
+	term.clearScreen();
 	usleep(1000000);
 	cout << "PLEASE WAIT..." << flush;
 	usleep(2000000);
 	
 	//Wait Screen, post ascii init
-	clearScreen();
+	term.clearScreen();
 	cout << "Please Wait..." << flush;
 	usleep(2300000);
  
 	//Term OK screen
-	clearScreen();
+	term.clearScreen();
  
 	usleep(200000);  
-	setCursorPos(0, round(w.ws_row/2) - 1);
-	cout << BEEP;
-	cout << center("┏━━━━━━━━━━━━━━━━━━┓") << '\n';
-	cout << center("┃    RT-1200 OK    ┃") << '\n';
-	cout << center("┗━━━━━━━━━━━━━━━━━━┛") << '\n';
+	term.setCursorPos(0, round(term.TermSize.ws_row/2) - 1);
+	cout << '\7';
+	cout << term.center("┏━━━━━━━━━━━━━━━━━━┓") << '\n';
+	cout << term.center("┃    RT-1200 OK    ┃") << '\n';
+	cout << term.center("┗━━━━━━━━━━━━━━━━━━┛") << '\n';
 
 	//1/4 up from the bottom of the screen.
-	setCursorPos(0, floor(round(w.ws_row/2) + round(w.ws_row/2)/2));
-	cout << center("Firmware and Termlink Copyright (C) 2065,75") << "\n\n" << flush;
+	term.setCursorPos(0, floor(round(term.TermSize.ws_row/2) + round(term.TermSize.ws_row/2)/2));
+	cout << term.center("Firmware and Termlink Copyright (C) 2065,75") << "\n\n" << flush;
 	
 	//Loading Lines
-	cout << center("ROBCO Industries (TM)") << "\n\n" << flush;
+	cout << term.center("ROBCO Industries (TM)") << "\n\n" << flush;
 	usleep(600000);
-	cout << center("Loading Termlink interface...") << flush;
+	cout << term.center("Loading Termlink interface...") << flush;
 	usleep(1400000);
-	clearLine();
-	cout << center("Looking for Host...") << flush;
+	term.clearLine();
+	cout << term.center("Looking for Host...") << flush;
 	usleep(700000);
-	clearLine();
-	cout << center("Host Found!") << flush;
+	term.clearLine();
+	cout << term.center("Host Found!") << flush;
 	usleep(300000);
-	clearLine();
-	cout << center("Handshake Complete") << flush;
+	term.clearLine();
+	cout << term.center("Handshake Complete") << flush;
 	usleep(500000);
-	cout << "\n" << center("Connected at 600 bits/s") << "\x1b[A" << flush; //last ascii code is essentially a reverse newline
+	cout << "\n" << term.center("Connected at 600 bits/s") << "\x1b[A" << flush; //last ascii code is essentially a reverse newline
 	usleep(400000);
-	clearLine();
-	cout << center("Host is finishing up...") << flush;
+	term.clearLine();
+	cout << term.center("Host is finishing up...") << flush;
 	usleep(1100000);
 	
 	//Scrolling the text up...
-	for (int i = 0; i <= w.ws_row; i++) {
+	for (int i = 0; i <= term.TermSize.ws_row*2; i++) {
 		cout << "\n" << flush;
 		usleep(16666);
 	}
-	setCursorPos(0,0);
-	cursorShow();
+	term.setCursorPos(0,0);
+	term.cursorShow();
 }
