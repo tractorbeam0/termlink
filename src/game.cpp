@@ -63,7 +63,7 @@ class SingletonTable {
 		//Table is space delimited, will include special characters so be careful.
 		for (int i = 0; i < FileData.length(); i++) {
 			if (FileData[i] == ' ') {
-				passTable.push_back(FileData);
+				passTable.push_back(translationBuffer);
 				translationBuffer = "";
 				continue;
 			}
@@ -74,15 +74,8 @@ class SingletonTable {
 	void shufflePasswords() {
 		std::vector<std::string> tempTable;
 
-		std::vector<bool> isPassUsed;
-		isPassUsed.resize(passTable.size());
-
 		for (int i = 0; i < passTable.size(); i++) {
 			int random = rand() % passTable.size();
-			if (isPassUsed[random]) {
-				i--;
-				continue;
-			}
 			tempTable.push_back(passTable[random]);
 		}
 		passTable = tempTable;
@@ -98,20 +91,24 @@ class SingletonTable {
 		}
 
 		size_t segmentSize = tableArea / passTable.size();
-		size_t segmentIterator = 0;
 
-		for (std::string pass : passTable) {
-			int currentSegmentCoord = segmentIterator * segmentSize;
-			int effectiveSegmentSize = segmentSize - pass.length();
-			if (effectiveSegmentSize < 1) throw 1002;
+		for (int i = 0; i < passTable.size(); i++) {
+			int currentSegmentCoord = i * segmentSize;
+			int effectiveSegmentSize = segmentSize - passTable[i].length();
+			if (effectiveSegmentSize < 0) throw 1002;
 			
-			int passInsertionCoord = floor( rand() / effectiveSegmentSize );
-			for (char c : pass) {
-				tableString[currentSegmentCoord + passInsertionCoord] = c;
-				passInsertionCoord++;
+			currentSegmentCoord += floor( rand() % effectiveSegmentSize );
+			for (char c : passTable[i]) {
+				tableString[currentSegmentCoord] = c;
+				currentSegmentCoord++;
 			}
-
-			segmentIterator++;
+		}
+		
+		for (int i = 0; i < tableString.size(); i++) {
+			if (i % tableSize.ws_col == 0) {
+				outputTable.push_back("");
+			}
+			outputTable.back() += tableString[i];
 		}
 	}
 
@@ -121,11 +118,19 @@ public:
 		shufflePasswords();
 		generateTable();
 	}
+
+	void printTable(unsigned x, unsigned y) {
+		//Print the table
+		for (int i = 0; i < outputTable.size(); i++) {
+			term.setCursorPos(x, y + i);
+			term.slowPrint(outputTable[i]);
+		}
+	}
 };
 
 void Game() {
 	#ifdef DEBUG
-	cursorHide(); //Debug builds skip the intro, so this is needed to make the cursorShow down there not redundant. No, I don't care whether it matters.
+	term.cursorHide(); //Debug builds skip the intro, so this is needed to make the cursorShow down there not redundant. No, I don't care whether it matters.
 	#endif
 	//Fancily scrolling the text up and off the screen...
 	for (int i = 0; i <= term.TermSize.ws_row; i++) {
@@ -158,5 +163,9 @@ void Game() {
 	term.clearLine();
 	term.slowPrint("Starting Debugger...\n");
 	
-	SingletonTable table;
+	SingletonTable tableOne;
+	SingletonTable tableTwo;
+
+	tableOne.printTable(1, 5);
+	tableTwo.printTable(17, 5);
 }

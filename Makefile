@@ -1,14 +1,14 @@
-all: build/game.o build/intro.o build/termfunk.o build/main.o bin/termlink bin/PasswordTable.txt run
 
-debug:
-	CXXFLAGS += "-DDEBUG -g"
+
+all: build/game.o build/intro.o build/termfunk.o build/main.o bin/termlink bin/PasswordTable.txt
+all:
+	./bin/termlink
+
+debug: CXXFLAGS += -DDEBUG -g
 debug: all
 
 clean:
 	rm -f build/*.o bin/*
-
-run:
-	./bin/termlink
 
 build/game.o: src/game.cpp
 	$(CXX) $(CXXFLAGS) -c src/game.cpp -o build/game.o
