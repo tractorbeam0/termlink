@@ -39,7 +39,6 @@ int main() {
 	srand(time(NULL));
 	signal(SIGINT, sigintHandler);
 
-	//The actual code (Intro skipped for debugging)
 	try {
 		#ifndef DEBUG
 		Intro();
@@ -53,6 +52,8 @@ int main() {
 		printf("Exception!\n\n");
 		switch (error) {
 			case 1000: printf("(%d) The programmer is bad at math! (The generated table is not the expected size, and thus cannot render correctly)", error); break;
+			case 1001: printf("(%d) Unable to retrieve PasswordTable.txt! Is it in use / Does it exist?", error); break;
+			case 1002: printf("(%d) The password is longer than a table segment would allow! Unable to form table!", error); break;
 			default  : printf("(%d) An integer has been thrown, but it is out of index! Unable to determine error.", error); break;
 		}
 		printf("\n\nUnable to continue. Cleaning up and exiting...\n");

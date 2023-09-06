@@ -147,7 +147,7 @@ void Intro() {
 	usleep(1100000);
 	
 	//Scrolling the text up...
-	for (int i = 0; i <= term.TermSize.ws_row*2; i++) {
+	for (int i = 0; i <= term.TermSize.ws_row; i++) {
 		cout << "\n" << flush;
 		usleep(16666);
 	}

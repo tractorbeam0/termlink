@@ -25,26 +25,6 @@
 
 #include "termfunk.h"
 
-//Private functions, see line 56ish for the ones you actually get to use
-
-void termfunk::termf_cout(std::string input) {
-	std::cout << input << std::flush;
-
-	//Update the terminal position
-	int numOfLoops = floor(strlen_utf8(input) / TermSize.ws_col);
-	int remainder = strlen_utf8(input) - (numOfLoops * TermSize.ws_col);
-	TermPos.ws_col += remainder;
-
-	if (strlen_utf8(input) < TermSize.ws_col) return;
-	for (int i = 0; i < numOfLoops; i++)
-		TermSize.ws_row++;
-}
-
-void termfunk::updatePos(unsigned short &ws_col, unsigned short &ws_row) {
-	TermPos.ws_col = ws_col;
-	TermPos.ws_row = ws_row;
-}
-
 size_t termfunk::strlen_utf8(const std::string& str) {
 	size_t length = 0;
 	for (char c : str) {
@@ -60,13 +40,10 @@ size_t termfunk::strlen_utf8(const std::string& str) {
 termfunk::termfunk() {
 	//Establishes the size of the terminal.
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &TermSize);
-	TermPos = TermSize;
-	clearScreen();
 }
 
 //Cleans up and prepares the terminal to be used by regular programs again.
 termfunk::~termfunk() {
-	clearScreen();
 	cursorShow();
 }
 
@@ -79,9 +56,10 @@ void termfunk::clearScreen() {
 
 // It clears the line the cursor is on.
 void termfunk::clearLine() {
-	std::cout << "\r" << std::flush;
-	for (int i=0; i < TermSize.ws_col; i++)
+	std::cout << "\r";
+	for (int i=0; i < TermSize.ws_col; i++) {
 		std::cout << " ";
+	}
 	std::cout << "\r" << std::flush;
 }
 
@@ -98,7 +76,6 @@ void termfunk::cursorShow() {
 // Uses an ansi code to change the cursor position in the terminal.
 // The terminal location values start at 1,1 not 0,0 so for simplicity it increments them by one so you can input 0,0 for the top-left.
 void termfunk::setCursorPos(unsigned short col, unsigned short row) {
-	this->updatePos(col, row);
 	printf("\033[%d;%dH",++row,++col);
 }
 
@@ -106,7 +83,7 @@ void termfunk::setCursorPos(unsigned short col, unsigned short row) {
 void termfunk::slowPrint(std::string input) {
 	for (char c : input) {
 		usleep(16666);
-		termf_cout(std::string(1, c));
+		std::cout << std::string(1, c) << std::flush;
 	}
 }
 

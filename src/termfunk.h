@@ -29,8 +29,7 @@
 
 struct termfunk {
   winsize TermSize;
-  winsize TermPos;
-
+  
   termfunk();
   ~termfunk();
   void clearScreen();
@@ -42,8 +41,6 @@ struct termfunk {
   std::string center(std::string input);
 
 private:
-  void termf_cout(std::string input);
-  void updatePos(unsigned short &ws_col, unsigned short &ws_row);
   size_t strlen_utf8(const std::string& str);
 };
 

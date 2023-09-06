@@ -2,3 +2,5 @@ termlink
 .vscode
 *.s
 a.out
+build/*
+bin/*
