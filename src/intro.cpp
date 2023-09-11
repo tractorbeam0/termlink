@@ -145,12 +145,6 @@ void Intro() {
 	term.clearLine();
 	cout << term.center("Host is finishing up...") << flush;
 	usleep(1100000);
-	
-	//Scrolling the text up...
-	for (int i = 0; i <= term.TermSize.ws_row; i++) {
-		cout << "\n" << flush;
-		usleep(16666);
-	}
-	term.setCursorPos(0,0);
+
 	term.cursorShow();
 }

@@ -40,7 +40,7 @@ int main() {
 	signal(SIGINT, sigintHandler);
 
 	try {
-		#ifndef DEBUG
+		#ifdef NDEBUG
 		Intro();
 		#endif
 		Game();
@@ -48,17 +48,21 @@ int main() {
 
 	//This is the error handler. I may or may not end up seperating this into its own source file.
 	catch (int error) {
+		#ifdef NDEBUG
 		term.clearScreen();
-		printf("Exception!\n\n");
+		#endif
+
 		switch (error) {
-			case 1000: printf("(%d) The programmer is bad at math! (The generated table is not the expected size, and thus cannot render correctly)", error); break;
-			case 1001: printf("(%d) Unable to retrieve PasswordTable.txt! Is it in use / Does it exist?", error); break;
-			case 1002: printf("(%d) The password is longer than a table segment would allow! Unable to form table!", error); break;
+			case 1000: printf("(%d) The generated table is not the expected size, and thus cannot render correctly! (This is depreciated and you should never see this)", error); break;
+			case 1001: printf("(%d) Unable to retrieve PasswordTable.txt! Does it exist?", error); break;
+			case 1002: printf("(%d) A password is longer than a table segment would allow! Unable to form table!", error); break;
 			default  : printf("(%d) An integer has been thrown, but it is out of index! Unable to determine error.", error); break;
 		}
-		printf("\n\nUnable to continue. Cleaning up and exiting...\n");
+		printf("\n\nUnable to continue. Cleaning up and exiting...");
 		return error;
 	}
+
+	std::cout << "\n\n" << std::flush;
 
 	return 0;
 }

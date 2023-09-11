@@ -23,4 +23,6 @@
 #pragma once
 
 void Game();
+#ifdef NDEBUG
 void Intro();
+#endif

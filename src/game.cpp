@@ -45,77 +45,101 @@ class SingletonTable {
 	const winsize tableSize = {12, 15};
 	const size_t tableArea = tableSize.ws_row * tableSize.ws_col;
 	const std::string garble = "!@#$%^&*()_+-=[]{};':\",./<>?`~\\|";
-	std::vector<std::string> passTable;
+	std::vector<std::string> keyTable;
 	std::vector<std::string> outputTable;
+	std::vector<bool> passInUse;
 
 	void openFile(std::string input) {
 		std::ifstream fileStream(input);
-		if (!fileStream.is_open()) throw 1001;
-		std::stringstream fStreamToStringBuffer;
-		std::string FileData;
+		std::stringstream FileData;
 
-		fStreamToStringBuffer << fileStream.rdbuf();
+		if (!fileStream.is_open()) {
+			throw 1001;
+		}
+		FileData << fileStream.rdbuf();
 		fileStream.close();
 
-		FileData = fStreamToStringBuffer.str();
-
-		std::string translationBuffer;
 		//Table is space delimited, will include special characters so be careful.
-		for (int i = 0; i < FileData.length(); i++) {
-			if (FileData[i] == ' ') {
-				passTable.push_back(translationBuffer);
-				translationBuffer = "";
+		std::string tempString;
+		for (char c : FileData.str()) {
+			if (c == ' ') {
+				keyTable.push_back(tempString);
+				passInUse.push_back(false);
+				tempString = "";
 				continue;
 			}
-			translationBuffer += FileData[i];
+			tempString += c;
 		}
+
+		if (tempString != "")
+			keyTable.push_back(tempString);
+			passInUse.push_back(false);
 	}
 
-	void shufflePasswords() {
+	void shuffleKeys() {
 		std::vector<std::string> tempTable;
+		tempTable.resize(keyTable.size());
 
-		for (int i = 0; i < passTable.size(); i++) {
-			int random = rand() % passTable.size();
-			tempTable.push_back(passTable[random]);
+		for (int i = 0; i < keyTable.size(); i++) {
+			int random = floor (rand() % keyTable.size());
+			if (!passInUse[random]) {
+				tempTable[i] = keyTable[random];
+				passInUse[random] = true;
+			} else
+				i--;
 		}
-		passTable = tempTable;
+
+		keyTable = tempTable;
+	}
+
+	std::string generateSegment(std::string key, size_t size) {
+		if (key.length() > size)
+			throw 1002;
+		
+		std::string output;
+
+		//Fill segment with garble
+		for (int i = 0; i < size; i++) {
+			output += garble[rand() % garble.size()];
+		}
+		
+		//Overwrite a random portion of the segment with the key
+		int randomcoord = rand() % (size - key.length());
+		for (char c : key) {
+			output[randomcoord] = c;
+			randomcoord++;
+		}
+
+		return output;
 	}
 
 	void generateTable() {
+		//Find the size a segment would be
+		size_t segmentSize = tableArea / keyTable.size();
+
+		//Generate the table
 		std::string tableString;
-		int i = 0;
-
-		//Fill the table with garbage
-		for (int i = 0; i < tableArea; i++) {
-			tableString += garble[rand() % garble.length()];
+		for (std::string s : keyTable) {
+			tableString += generateSegment(s, segmentSize);
 		}
 
-		size_t segmentSize = tableArea / passTable.size();
-
-		for (int i = 0; i < passTable.size(); i++) {
-			int currentSegmentCoord = i * segmentSize;
-			int effectiveSegmentSize = segmentSize - passTable[i].length();
-			if (effectiveSegmentSize < 0) throw 1002;
-			
-			currentSegmentCoord += floor( rand() % effectiveSegmentSize );
-			for (char c : passTable[i]) {
-				tableString[currentSegmentCoord] = c;
-				currentSegmentCoord++;
+		std::string tmp;
+		for (char c : tableString) {
+			tmp += c;
+			if (tmp.length() == tableSize.ws_col) {
+				outputTable.push_back(tmp);
+				tmp = "";
 			}
 		}
-		
-		for (int i = 0; i < tableString.size(); i++) {
-			if (i % tableSize.ws_col == 0) {
-				outputTable.push_back("");
-			}
-			outputTable.back() += tableString[i];
-		}
+
+		if (tmp != "")
+			outputTable.push_back(tmp);
 	}
 
 public:
-	SingletonTable() {
-		openFile("./PasswordTable.txt");
-		shufflePasswords();
+	SingletonTable(std::string file) {
+		openFile(file);
+		shuffleKeys();
 		generateTable();
 	}
 
@@ -129,9 +153,7 @@ public:
 };
 
 void Game() {
-	#ifdef DEBUG
-	term.cursorHide(); //Debug builds skip the intro, so this is needed to make the cursorShow down there not redundant. No, I don't care whether it matters.
-	#endif
+	term.cursorHide();
 	//Fancily scrolling the text up and off the screen...
 	for (int i = 0; i <= term.TermSize.ws_row; i++) {
 		std::cout << "\n" << std::flush;
@@ -142,6 +164,7 @@ void Game() {
 
 	usleep(3000000);
 	term.slowPrint("Welcome to ROBCO Industries (TM) Termlink\n");
+	#ifdef NDEBUG
 	term.slowPrint("**LOGIN SCRIPT ACTIVE**\n\n");
 	usleep(150000);
 	term.slowPrint("TERMINAL SET TO MAINTANANCE MODE - Contact your administrator.\n");
@@ -154,18 +177,17 @@ void Game() {
 	term.slowPrint("7A> INS 6B, 07 55 7C 3E D1 1F\n");
 	term.slowPrint("7B> //CODE INJECTION COMPLETE\n");
 	term.slowPrint("7B> RUN E1\n");
-	usleep(520000);  
+	usleep(520000);
+	#endif
 	termClear();
 	term.slowPrint("Password Required\n\n");
 	usleep(200000);
-	term.slowPrint("Please wait...");
+	term.slowPrint("Starting Debugger...");
 	usleep(400000);
 	term.clearLine();
-	term.slowPrint("Starting Debugger...\n");
+	term.slowPrint("Please wait...\n");
 	
-	SingletonTable tableOne;
-	SingletonTable tableTwo;
+	SingletonTable tableone("passwords.txt");
 
-	tableOne.printTable(1, 5);
-	tableTwo.printTable(17, 5);
+	tableone.printTable(1, 5);
 }

@@ -1,29 +1,39 @@
+# Created by tractorbeam
+ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
+SOURCE_DIR = $(ROOT_DIR)/src
+BIN_DIR = $(ROOT_DIR)/bin
+BUILD_DIR := $(BIN_DIR)/build
+ALL_ASSETS := $(wildcard $(ROOT_DIR)/assets/*)
 
-all: build/game.o build/intro.o build/termfunk.o build/main.o bin/termlink bin/PasswordTable.txt
-all:
-	./bin/termlink
+release: CMAKE_FLAGS := -DCMAKE_BUILD_TYPE=Release -DSRC_DIR:STRING=$(SOURCE_DIR)
+release: BUILD_DIR := $(BIN_DIR)/release
+release: configure build finalize
 
-debug: CXXFLAGS += -DDEBUG -g
-debug: all
+debug: CMAKE_FLAGS := -DCMAKE_BUILD_TYPE=Debug -DSRC_DIR:STRING=$(SOURCE_DIR)
+debug: BUILD_DIR := $(BIN_DIR)/debug
+debug: configure build finalize
+
+test: BUILD_DIR := $(ROOT_DIR)/debug
+test: debug
+	@cd $(BUILD_DIR) && ./termlink
 
 clean:
-	rm -f build/*.o bin/*
+	@rm -rf $(BIN_DIR) $(ROOT_DIR)/build
 
-build/game.o: src/game.cpp
-	$(CXX) $(CXXFLAGS) -c src/game.cpp -o build/game.o
+configure: $(BUILD_DIR)/Makefile
 
-build/intro.o: src/intro.cpp
-	$(CXX) $(CXXFLAGS) -c src/intro.cpp -o build/intro.o
-	
-build/termfunk.o: src/termfunk.cpp
-	$(CXX) $(CXXFLAGS) -c src/termfunk.cpp -o build/termfunk.o
+$(BUILD_DIR)/Makefile:
+	@mkdir -p $(BUILD_DIR)
+	@cmake $(CMAKE_FLAGS) -B $(BUILD_DIR)
 
-build/main.o: src/main.cpp
-	$(CXX) $(CXXFLAGS) -c src/main.cpp -o build/main.o
+build: $(BUILD_DIR)/termlink
 
-bin/PasswordTable.txt: PasswordTable.txt
-	cp PasswordTable.txt bin/PasswordTable.txt
+$(BUILD_DIR)/termlink:
+	@make --no-print-directory -C $(BUILD_DIR)
+	@mv $(BUILD_DIR)/termlink $(BIN_DIR)/termlink
 
-bin/termlink: build/game.o build/intro.o build/termfunk.o build/main.o
-	$(CXX) $(CXXFLAGS) build/*.o -o bin/termlink
+finalize: $(ALL_ASSETS)
+	@cp -r $^ $(BIN_DIR)
+
+.PHONY: release debug test clean configure build finalize
