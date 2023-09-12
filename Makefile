@@ -28,7 +28,7 @@ $(CMAKE_DIR)/Makefile:
 
 build: $(CMAKE_DIR)/termlink
 
-$(CMAKE_DIR)/termlink:
+$(BIN_DIR)/termlink:
 	@make --no-print-directory -C $(CMAKE_DIR)
 	@mv $(CMAKE_DIR)/termlink $(BIN_DIR)/termlink
 
