@@ -82,7 +82,9 @@ void termfunk::setCursorPos(unsigned short col, unsigned short row) {
 //Usage: slowPrint("Hello, World!")
 void termfunk::slowPrint(std::string input) {
 	for (char c : input) {
+		#ifdef NDEBUG
 		usleep(16666);
+		#endif
 		std::cout << std::string(1, c) << std::flush;
 	}
 }
