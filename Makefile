@@ -14,7 +14,7 @@ debug: CMAKE_FLAGS := -DCMAKE_BUILD_TYPE=Debug -DSRC_DIR:STRING=$(SOURCE_DIR)
 debug: BUILD_DIR := $(BIN_DIR)/debug
 debug: configure build finalize
 
-test: BUILD_DIR := $(BIN_DIR)/debug
+test: BUILD_DIR := $(BIN_DIR)
 test: debug
 	@cd $(BUILD_DIR) && ./termlink
 
