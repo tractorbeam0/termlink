@@ -146,5 +146,31 @@ void Intro() {
 	cout << term.center("Host is finishing up...") << flush;
 	usleep(1100000);
 
+	//Fancily scrolling the text up and off the screen...
+	for (int i = 0; i <= term.TermSize.ws_row; i++) {
+		cout << "\n" << flush;
+		usleep(16666);
+	}
+	term.setCursorPos(0,0);
 	term.cursorShow();
+
+	usleep(3000000);
+	term.slowPrint("Welcome to ROBCO Industries (TM) Termlink\n");
+	term.slowPrint("**LOGIN SCRIPT ACTIVE**\n\n");
+	usleep(150000);
+	term.slowPrint("TERMINAL SET TO MAINTANANCE MODE - Contact your administrator.\n");
+	term.slowPrint("((HOOKED!))\n");
+	usleep(50000);
+	term.slowPrint("00> OPN MEM 00,7D\n");
+	term.slowPrint("00> OPN MEM E1,FF\n");
+	term.slowPrint("E1> INS MEM 69, 00 5F 4B D8 A7 01\n");
+	usleep(150000);
+	term.slowPrint("\nUNAUTHORIZED ACCESS TO KERNEL MEMORY DETECTED\n");
+	term.slowPrint("CUTTING CONNECTION...\n\n");
+	term.slowPrint("((IGNORE THAT))\n");
+	term.slowPrint("E2> INS MEM 6A, FF 4D 0A AA 6B 4F\n");
+	term.slowPrint("E3> INS MEM 6B, 07 55 7C 3E D1 1F\n");
+	term.slowPrint("((CODE INJECTION COMPLETE))\n");
+	term.slowPrint("E4> RUN E1\n");
+	usleep(520000);
 }

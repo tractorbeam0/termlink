@@ -25,7 +25,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-
 #include "main.h"
 #include "termfunk.h"
 
@@ -54,11 +53,11 @@ int main() {
 
 		switch (error) {
 			case 1000: printf("(%d) The generated table is not the expected size, and thus cannot render correctly! (This is depreciated and you should never see this)", error); break;
-			case 1001: printf("(%d) Unable to retrieve PasswordTable.txt! Does it exist?", error); break;
+			case 1001: printf("(%d) Unable to retrieve passwords.txt! Does it exist?", error); break;
 			case 1002: printf("(%d) A password is longer than a table segment would allow! Unable to form table!", error); break;
 			default  : printf("(%d) An integer has been thrown, but it is out of index! Unable to determine error.", error); break;
 		}
-		printf("\n\nUnable to continue. Cleaning up and exiting...");
+		printf("\n\nUnable to continue. Cleaning up and exiting...\n\n");
 		return error;
 	}
 
