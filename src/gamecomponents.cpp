@@ -18,21 +18,20 @@ void TableManager::openFile(string input) {
 	FileData << fileStream.rdbuf();
 	fileStream.close();
 
-	//Table is newline delimited, doesn't filter ascii codes so be careful.
+	//Table is delimited with newline's, spaces, or carriage returns
+	//doesn't filter ascii codes so be careful.
 	string tempString;
 	for (char c : FileData.str()) {
-		if (c == '\n') {
-			keyTable.push_back(tempString);
-			passInUse.push_back(false);
-			tempString = "";
+		if (isspace(c)) {
+			keyTable.push_back((Key){tempString, false});
+			tempString.clear();
 			continue;
 		}
 		tempString += c;
 	}
 
-	if (tempString != "") {
-		keyTable.push_back(tempString);
-		passInUse.push_back(false);
+	if (tempString.empty() == false) {
+		keyTable.push_back((Key){tempString, false});
 	}
 }
 
@@ -41,18 +40,18 @@ vector<string> TableManager::shuffledKeys() {
 
 	//Check all of the keys to see if there are any left to use
 	//Also see if there are enough to generate a corresponding segment
-	size_t keysLeft;
-	for (bool b : passInUse) {
-		if (!b)
-			keysLeft++;
+	size_t keysRemaining;
+	for (Key p : keyTable) {
+		if (!p.isUsed)
+			keysRemaining++;
 	}
 
 	size_t numKeys = floor(rand() % 3 + 5);
 	tempTable.resize(numKeys);
 
-	if (keysLeft < numKeys) {
+	if (keysRemaining < numKeys) {
 		#ifndef NDEBUG
-		printf("Need to return %ld keys, but there were only %ld left.\n", numKeys, keysLeft);
+		printf("Need to return %ld keys, but there were only %ld left.\n", numKeys, keysRemaining);
 		#endif
 
 		throw 1003;
@@ -60,9 +59,9 @@ vector<string> TableManager::shuffledKeys() {
 
 	for (int i = 0; i < numKeys; i++) {
 		int random = floor (rand() % keyTable.size());
-		if (!passInUse[random]) {
-			tempTable[i] = keyTable[random];
-			passInUse[random] = true;
+		if (!keyTable[random].isUsed) {
+			tempTable[i] = keyTable[random].ID;
+			keyTable[random].isUsed = true;
 		} else
 			i--;
 	}

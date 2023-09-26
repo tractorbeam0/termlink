@@ -10,20 +10,20 @@
 namespace GameComponents {
   class Terminal;
   class TableManager {
+
     private:
 
-    struct Password {
+    struct Key {
       std::string ID;
-      bool isCorrect;
+      bool isUsed;
     };
 
     const winsize tableSize = {12, 15};
     const size_t tableArea = tableSize.ws_row * tableSize.ws_col;
     const std::string garble = "\".!@#$%^&*()_+-=[]{};':,/<>?`~\\|";
 
-    std::vector<std::string> keyTable;
+    std::vector<Key> keyTable;
     std::vector<std::string> outputTable;
-    std::vector<bool> passInUse;
 
     void openFile(std::string input);
     std::vector<std::string> shuffledKeys();
@@ -36,5 +36,6 @@ namespace GameComponents {
     void generateTable();
     char getRandomChar();
     void printTable(unsigned x, unsigned y);
+
   };
 }

@@ -29,10 +29,9 @@
 #include "gamecomponents.h"
 
 using namespace std;
-using namespace GameComponents;
 
 //Clears everything on the screen *except* the "Welcome to ROBCO..." in an animated manor.
-void termClearDontClearTitle() {
+void termClearEverythingButTitle() {
 	term.setCursorPos(0,1);
 	for (int i = 2; i < term.TermSize.ws_row; i++) {
 		term.clearLine();
@@ -43,7 +42,7 @@ void termClearDontClearTitle() {
 }
 
 void Game() {
-	termClearDontClearTitle();
+	termClearEverythingButTitle();
 	term.slowPrint("Password Required\n\n");
 	usleep(200000);
 	term.slowPrint("Starting Debugger...");
@@ -79,7 +78,7 @@ void Game() {
 	term.setCursorPos(0, 4);
 	term.clearLine();
 	term.slowPrint("Reading from memory...\n\n");
-	TableManager table("passwords.txt");
+	GameComponents::TableManager table("passwords.txt");
 
 	table.printTable(7, 6);
 	table.generateTable();
