@@ -41,13 +41,14 @@ namespace Gc
       bool isUsed;
     };
 
+    #ifdef NDEBUG
+    const std::string garble = "\".!@#$%^&*()_+-=[]{};':,/<>?`~\\|";
+    #else
+    const std::string garble = ".";
+    #endif
+
     const winsize tableSize = {12, 15};
     const size_t tableArea = tableSize.ws_row * tableSize.ws_col;
-    #ifndef NDEBUG
-    const std::string garble = ".";
-    #else
-    const std::string garble = "\".!@#$%^&*()_+-=[]{};':,/<>?`~\\|";
-    #endif
     std::vector<Key> keys;
     std::vector<std::string> outputTable;
 
