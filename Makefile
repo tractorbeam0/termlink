@@ -13,7 +13,7 @@ debug: BIN_DIR := $(ROOT_DIR)/build-debug
 debug: configure build finalize
 
 test: debug
-	cd $(BIN_DIR) && ./termlink
+	cd $(ROOT_DIR)/build-debug && ./termlink
 
 clean:
 	rm -rf $(BIN_DIR) $(ROOT_DIR)/build-debug

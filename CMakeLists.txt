@@ -11,10 +11,9 @@ endif()
 add_executable(termlink
     ${SRC_DIR}/main.cpp
     ${SRC_DIR}/main.h
-    ${SRC_DIR}/termfunk.cpp
-    ${SRC_DIR}/termfunk.h
-    ${SRC_DIR}/gamecomponents.cpp
-    ${SRC_DIR}/gamecomponents.h
+    ${SRC_DIR}/GcTable.cpp
+    ${SRC_DIR}/GcTerminal.cpp
+    ${SRC_DIR}/GameComponents.h
     ${SRC_DIR}/game.cpp
 )
 

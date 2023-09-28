@@ -1,14 +1,17 @@
+
+
+#include <sys/ioctl.h>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <math.h>
 #include <vector>
-#include "gamecomponents.h"
+#include "GameComponents.h"
 
 using namespace std;
-using namespace GameComponents;
 
-void TableManager::openFile(string input) {
+void Gc::Table::openFile(string input) {
 	ifstream fileStream(input);
 	stringstream FileData;
 
@@ -18,12 +21,12 @@ void TableManager::openFile(string input) {
 	FileData << fileStream.rdbuf();
 	fileStream.close();
 
-	//Table is delimited with newline's, spaces, or carriage returns
+	//Gc::Table is delimited with newline's, spaces, or carriage returns
 	//doesn't filter ascii codes so be careful.
 	string tempString;
 	for (char c : FileData.str()) {
 		if (isspace(c)) {
-			keyTable.push_back((Key){tempString, false});
+			keys.push_back((Key){tempString, false});
 			tempString.clear();
 			continue;
 		}
@@ -31,17 +34,17 @@ void TableManager::openFile(string input) {
 	}
 
 	if (tempString.empty() == false) {
-		keyTable.push_back((Key){tempString, false});
+		keys.push_back((Key){tempString, false});
 	}
 }
 
-vector<string> TableManager::shuffledKeys() {
+vector<string> Gc::Table::shuffledKeys() {
 	vector<string> tempTable;
 
 	//Check all of the keys to see if there are any left to use
 	//Also see if there are enough to generate a corresponding segment
 	size_t keysRemaining;
-	for (Key p : keyTable) {
+	for (Key p : keys) {
 		if (!p.isUsed)
 			keysRemaining++;
 	}
@@ -58,10 +61,10 @@ vector<string> TableManager::shuffledKeys() {
 	}
 
 	for (int i = 0; i < numKeys; i++) {
-		int random = floor (rand() % keyTable.size());
-		if (!keyTable[random].isUsed) {
-			tempTable[i] = keyTable[random].ID;
-			keyTable[random].isUsed = true;
+		int random = floor (rand() % keys.size());
+		if (!keys[random].isUsed) {
+			tempTable[i] = keys[random].ID;
+			keys[random].isUsed = true;
 		} else
 			i--;
 	}
@@ -69,9 +72,10 @@ vector<string> TableManager::shuffledKeys() {
 	return tempTable;
 }
 
-string TableManager::generateSegment(string key, size_t size) {
+string Gc::Table::generateSegment(string key, size_t size) {
 	if (key.length() >= size) {
 		#ifndef NDEBUG
+		Term.setCursorPos(0, Term.Size.ws_row);
 		printf("Key: %s\n", key.c_str());
 		printf("Size: %ld\n", size);
 		#endif
@@ -96,7 +100,7 @@ string TableManager::generateSegment(string key, size_t size) {
 	return output;
 }
 
-void TableManager::sortSegments(vector<string> keyTable) {
+void Gc::Table::sortSegments(vector<string> keyTable) {
 	//Find the size a segment would be
 	size_t segmentSize = tableArea / keyTable.size();
 
@@ -123,24 +127,24 @@ void TableManager::sortSegments(vector<string> keyTable) {
 		outputTable.push_back(tmp);
 }
 
-TableManager::TableManager(string file) {
+Gc::Table::Table(string file) {
 	openFile(file);
-	generateTable();
+	Generate();
 }
 
-void TableManager::generateTable() {
+void Gc::Table::Generate() {
 	outputTable.clear();
 	sortSegments(shuffledKeys());
 }
 
-char TableManager::getRandomChar() {
+char Gc::Table::getRandomChar() {
 	return garble[rand() % garble.size()];
 }
 
-void TableManager::printTable(unsigned x, unsigned y) {
+void Gc::Table::Print(unsigned x, unsigned y) {
 	//Print the table
 	for (int i = 0; i < outputTable.size(); i++) {
-		term.setCursorPos(x, y + i);
-		term.slowPrint(outputTable[i]);
+		Term.setCursorPos(x, y + i);
+		Term.slowPrint(outputTable[i]);
 	}
 }

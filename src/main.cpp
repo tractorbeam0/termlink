@@ -21,12 +21,14 @@
 
 //"YOU ARE OUT OF UNIFORM SOLDIER, WHERE IS YOUR POOWHHERR AAHHRRMOR!?"
 
+#include <iostream>
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+
 #include "main.h"
-#include "termfunk.h"
+#include "GameComponents.h"
 
 void sigintHandler(int sig_num) {
 	signal(SIGINT, sigintHandler);
@@ -48,7 +50,7 @@ int main() {
 	//This is the error handler. I may or may not end up seperating this into its own source file.
 	catch (int error) {
 		#ifdef NDEBUG
-		term.clearScreen();
+		Term.clearScreen();
 		#endif
 
 		switch (error) {

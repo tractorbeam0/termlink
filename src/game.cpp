@@ -25,30 +25,31 @@
 #include <sstream>
 #include <math.h>
 #include <string>
-#include "termfunk.h"
-#include "gamecomponents.h"
 
+#include "GameComponents.h"
+
+using namespace Gc;
 using namespace std;
 
 //Clears everything on the screen *except* the "Welcome to ROBCO..." in an animated manor.
 void termClearEverythingButTitle() {
-	term.setCursorPos(0,1);
-	for (int i = 2; i < term.TermSize.ws_row; i++) {
-		term.clearLine();
+	Term.setCursorPos(0,1);
+	for (int i = 2; i < Term.Size.ws_row; i++) {
+		Term.clearLine();
 		cout << '\n' << flush;
 		usleep(16666);
 	}
-	term.setCursorPos(0,2);
+	Term.setCursorPos(0,2);
 }
 
 void Game() {
 	termClearEverythingButTitle();
-	term.slowPrint("Password Required\n\n");
+	Term.slowPrint("Password Required\n\n");
 	usleep(200000);
-	term.slowPrint("Starting Debugger...");
+	Term.slowPrint("Starting Debugger...");
 	usleep(700000);
-	term.clearLine();
-	term.slowPrint("Please wait...\n\n");
+	Term.clearLine();
+	Term.slowPrint("Please wait...\n\n");
 	
 	//Any number within the 16-bit integer range, minus the number of lines in both the tables.
 	uint16_t random = rand() % (65535 - 24);
@@ -56,9 +57,9 @@ void Game() {
 	for (int i = 0; i < 24; i++)
 	{
 		if (i < 12)
-			term.setCursorPos(0, 6 + i);
+			Term.setCursorPos(0, 6 + i);
 		else
-			term.setCursorPos(23, 6 + i - 12);
+			Term.setCursorPos(23, 6 + i - 12);
 		
 		output << hex << uppercase << random + i << nouppercase << dec;
 
@@ -71,16 +72,16 @@ void Game() {
 		tmp << output.rdbuf();
 		output = move(tmp);
 		
-		term.slowPrint("0x" + output.str());
+		Term.slowPrint("0x" + output.str());
 		output.str("");
 	}
 
-	term.setCursorPos(0, 4);
-	term.clearLine();
-	term.slowPrint("Reading from memory...\n\n");
-	GameComponents::TableManager table("passwords.txt");
+	Term.setCursorPos(0, 4);
+	Term.clearLine();
+	Term.slowPrint("Reading from memory...\n\n");
+	Gc::Table table("passwords.txt");
 
-	table.printTable(7, 6);
-	table.generateTable();
-	table.printTable(30, 6);
+	table.Print(7, 6);
+	table.Generate();
+	table.Print(30, 6);
 }

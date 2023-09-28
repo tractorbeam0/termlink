@@ -25,23 +25,24 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
-#include "termfunk.h"
+#include "GameComponents.h"
 
+using namespace Gc;
 using namespace std;
 
 //If I could do the startup flash without nesting so many for loops it'd be 100x more readable. *sigh*...
 
 void Intro() {
 
-	term.cursorHide();
+	Term.cursorHide();
 	usleep(2401000); //Dramatic pause...
 	
 	//Startup
 	for (int i = 0; i < 4; i++) {
 		for (int i = 0; i < 7; i++) {
-			int linecoord = rand()%term.TermSize.ws_col;
-			for (int i = 0; i < term.TermSize.ws_col; i++) {
-				term.setCursorPos(i, linecoord);
+			int linecoord = rand()%Term.Size.ws_col;
+			for (int i = 0; i < Term.Size.ws_col; i++) {
+				Term.setCursorPos(i, linecoord);
 				cout << "█";
 			}
 		}
@@ -50,18 +51,18 @@ void Intro() {
 	usleep(30000);
 	
 	//White screen
-	term.setCursorPos(0,0);
-	for (int i = 0; i < term.TermSize.ws_row * term.TermSize.ws_col; i++) {
+	Term.setCursorPos(0,0);
+	for (int i = 0; i < Term.Size.ws_row * Term.Size.ws_col; i++) {
 		cout << "█";
 	}
 	cout << flush;
 	usleep(100000);
 	
 	//Vertical lines
-	term.clearScreen();
-	for (int i = 0; i < term.TermSize.ws_col; i+=2) {
-		for (int j = 0; j < term.TermSize.ws_row; j++) {
-			term.setCursorPos(i,j);
+	Term.clearScreen();
+	for (int i = 0; i < Term.Size.ws_col - 1; i+=2) {
+		for (int j = 0; j < Term.Size.ws_row; j++) {
+			Term.setCursorPos(i,j);
 			cout << " │";
 		}
 		cout << flush;
@@ -70,10 +71,10 @@ void Intro() {
 	usleep(100000);
 	
 	//Grid
-	term.setCursorPos(0,0);
-	for (int i = 0; i < term.TermSize.ws_row; i++) {
-		for (int j = 0; j < term.TermSize.ws_col; j+=2) {
-			term.setCursorPos(j,i);
+	Term.setCursorPos(0,0);
+	for (int i = 0; i < Term.Size.ws_row; i++) {
+		for (int j = 0; j < Term.Size.ws_col; j+=2) {
+			Term.setCursorPos(j,i);
 			cout << "─┼";
 		}
 		cout << flush;
@@ -82,9 +83,9 @@ void Intro() {
 	usleep(100000);
 
 	//Horizontal lines
-	for (int i = 0; i < term.TermSize.ws_col; i+=2) {
-		for (int j = 0; j < term.TermSize.ws_row; j++) {
-			term.setCursorPos(i,j);
+	for (int i = 0; i < Term.Size.ws_col; i+=2) {
+		for (int j = 0; j < Term.Size.ws_row - 1; j++) {
+			Term.setCursorPos(i,j);
 			cout << "──";
 		}
 		cout << flush;
@@ -92,9 +93,9 @@ void Intro() {
 	}
 	usleep(120000);
 
-	term.setCursorPos(0,0);
-	for (int i = 0; i < term.TermSize.ws_row; i++) {
-		for (int i = 0; i < term.TermSize.ws_col; i++) {
+	Term.setCursorPos(0,0);
+	for (int i = 0; i < Term.Size.ws_row; i++) {
+		for (int i = 0; i < Term.Size.ws_col - 1; i++) {
 			cout << " ";
 		}
 		cout << flush;
@@ -102,75 +103,75 @@ void Intro() {
 	}
 	
 	//Wait Screen
-	term.clearScreen();
+	Term.clearScreen();
 	usleep(1000000);
 	cout << "PLEASE WAIT..." << flush;
 	usleep(2000000);
 	
 	//Wait Screen, post ascii init
-	term.clearScreen();
+	Term.clearScreen();
 	cout << "Please Wait..." << flush;
 	usleep(2300000);
  
 	//Term OK screen
-	term.clearScreen();
+	Term.clearScreen();
  
 	usleep(200000);  
-	term.setCursorPos(0, round(term.TermSize.ws_row/2) - 1);
+	Term.setCursorPos(0, round(Term.Size.ws_row/2) - 1);
 	cout << '\7';
-	cout << term.center("┏━━━━━━━━━━━━━━━━━━┓") << '\n';
-	cout << term.center("┃    RT-1200 OK    ┃") << '\n';
-	cout << term.center("┗━━━━━━━━━━━━━━━━━━┛") << '\n';
+	cout << Term.center("┏━━━━━━━━━━━━━━━━━━┓") << '\n';
+	cout << Term.center("┃    RT-1200 OK    ┃") << '\n';
+	cout << Term.center("┗━━━━━━━━━━━━━━━━━━┛") << '\n';
 
 	//1/4 up from the bottom of the screen.
-	term.setCursorPos(0, floor(round(term.TermSize.ws_row/2) + round(term.TermSize.ws_row/2)/2));
-	cout << term.center("Firmware and Termlink Copyright (C) 2065,75") << "\n\n" << flush;
+	Term.setCursorPos(0, floor(round(Term.Size.ws_row/2) + round(Term.Size.ws_row/2)/2));
+	cout << Term.center("Firmware and Termlink Copyright (C) 2065,75") << "\n\n" << flush;
 	
 	//Loading Lines
-	cout << term.center("ROBCO Industries (TM)") << "\n\n" << flush;
+	cout << Term.center("ROBCO Industries (TM)") << "\n\n" << flush;
 	usleep(600000);
-	cout << term.center("Loading Termlink interface...") << flush;
+	cout << Term.center("Loading Termlink interface...") << flush;
 	usleep(1400000);
-	term.clearLine();
-	cout << term.center("Looking for Host...") << flush;
+	Term.clearLine();
+	cout << Term.center("Looking for Host...") << flush;
 	usleep(700000);
-	term.clearLine();
-	cout << term.center("Host Found!") << flush;
+	Term.clearLine();
+	cout << Term.center("Host Found!") << flush;
 	usleep(300000);
-	term.clearLine();
-	cout << term.center("Handshake Complete") << flush;
+	Term.clearLine();
+	cout << Term.center("Handshake Complete") << flush;
 	usleep(500000);
-	cout << "\n" << term.center("Connected at 600 bits/s") << "\x1b[A" << flush; //last ascii code is essentially a reverse newline
+	cout << "\n" << Term.center("Connected at 600 bits/s") << "\x1b[A" << flush; //last ascii code is essentially a reverse newline
 	usleep(400000);
-	term.clearLine();
-	cout << term.center("Host is finishing up...") << flush;
+	Term.clearLine();
+	cout << Term.center("Host is finishing up...") << flush;
 	usleep(1100000);
 
 	//Fancily scrolling the text up and off the screen...
-	for (int i = 0; i <= term.TermSize.ws_row; i++) {
+	for (int i = 0; i <= Term.Size.ws_row; i++) {
 		cout << "\n" << flush;
 		usleep(16666);
 	}
-	term.setCursorPos(0,0);
-	term.cursorShow();
+	Term.setCursorPos(0,0);
+	Term.cursorShow();
 
 	usleep(3000000);
-	term.slowPrint("Welcome to ROBCO Industries (TM) Termlink\n");
-	term.slowPrint("**LOGIN SCRIPT ACTIVE**\n\n");
+	Term.slowPrint("Welcome to ROBCO Industries (TM) Termlink\n");
+	Term.slowPrint("**LOGIN SCRIPT ACTIVE**\n\n");
 	usleep(150000);
-	term.slowPrint("TERMINAL SET TO MAINTANANCE MODE - Contact your administrator.\n");
-	term.slowPrint("((HOOKED!))\n");
+	Term.slowPrint("TERMINAL SET TO MAINTANANCE MODE - Contact your administrator.\n");
+	Term.slowPrint("((HOOKED!))\n");
 	usleep(50000);
-	term.slowPrint("00> OPN MEM 00,7D\n");
-	term.slowPrint("00> OPN MEM E1,FF\n");
-	term.slowPrint("E1> INS MEM 69, 00 5F 4B D8 A7 01\n");
+	Term.slowPrint("00> OPN MEM 00,7D\n");
+	Term.slowPrint("00> OPN MEM E1,FF\n");
+	Term.slowPrint("E1> INS MEM 69, 00 5F 4B D8 A7 01\n");
 	usleep(150000);
-	term.slowPrint("\nUNAUTHORIZED ACCESS TO KERNEL MEMORY DETECTED\n");
-	term.slowPrint("CUTTING CONNECTION...\n\n");
-	term.slowPrint("((IGNORE THAT))\n");
-	term.slowPrint("E2> INS MEM 6A, FF 4D 0A AA 6B 4F\n");
-	term.slowPrint("E3> INS MEM 6B, 07 55 7C 3E D1 1F\n");
-	term.slowPrint("((CODE INJECTION COMPLETE))\n");
-	term.slowPrint("E4> RUN E1\n");
+	Term.slowPrint("\nUNAUTHORIZED ACCESS TO KERNEL MEMORY DETECTED\n");
+	Term.slowPrint("CUTTING CONNECTION...\n\n");
+	Term.slowPrint("((IGNORE THAT))\n");
+	Term.slowPrint("E2> INS MEM 6A, FF 4D 0A AA 6B 4F\n");
+	Term.slowPrint("E3> INS MEM 6B, 07 55 7C 3E D1 1F\n");
+	Term.slowPrint("((CODE INJECTION COMPLETE))\n");
+	Term.slowPrint("E4> RUN E1\n");
 	usleep(520000);
 }
