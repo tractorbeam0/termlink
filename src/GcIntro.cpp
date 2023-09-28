@@ -1,8 +1,4 @@
 /* COPYRIGHT NOTICE
-	intro     - A not-so-vital piece of the termlink program
-	termlink  - A recreation of the terminal hacking minigame from the
-							Fallout series, with a sizable portion of personal
-							touches
 
 	Copyright (C) 2023  Gavin Mitchell
 
@@ -32,7 +28,7 @@ using namespace std;
 
 //If I could do the startup flash without nesting so many for loops it'd be 100x more readable. *sigh*...
 
-void Intro() {
+void GcIntro() {
 
 	Term.cursorHide();
 	usleep(2401000); //Dramatic pause...

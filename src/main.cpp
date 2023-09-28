@@ -1,7 +1,4 @@
 /* COPYRIGHT NOTICE
-	termlink  - A recreation of the terminal hacking minigame from the
-							Fallout series, with a sizable portion of personal
-							touches
 
 	Copyright (C) 2023  Gavin Mitchell
 
@@ -42,9 +39,9 @@ int main() {
 
 	try {
 		#ifdef NDEBUG
-		Intro();
+		GcIntro();
 		#endif
-		Game();
+		GcGame();
 	}
 
 	//This is the error handler. I may or may not end up seperating this into its own source file.

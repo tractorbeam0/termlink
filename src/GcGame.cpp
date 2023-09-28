@@ -1,8 +1,4 @@
 /* COPYRIGHT NOTICE
-	game      - The vast majority of the termlink program
-	termlink  - A recreation of the terminal hacking minigame from the
-							Fallout series, with a sizable portion of personal
-							touches
 
 	Copyright (C) 2023  Gavin Mitchell
 
@@ -42,7 +38,7 @@ void termClearEverythingButTitle() {
 	Term.setCursorPos(0,2);
 }
 
-void Game() {
+void GcGame() {
 	termClearEverythingButTitle();
 	Term.slowPrint("Password Required\n\n");
 	usleep(200000);

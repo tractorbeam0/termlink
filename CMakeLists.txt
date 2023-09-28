@@ -13,10 +13,10 @@ add_executable(termlink
     ${SRC_DIR}/main.h
     ${SRC_DIR}/GcTable.cpp
     ${SRC_DIR}/GcTerminal.cpp
+    ${SRC_DIR}/GcGame.cpp
     ${SRC_DIR}/GameComponents.h
-    ${SRC_DIR}/game.cpp
 )
 
 if(NOT CMAKE_BUILD_TYPE MATCHES Debug)
-    target_sources(termlink PRIVATE ${SRC_DIR}/intro.cpp)
+    target_sources(termlink PRIVATE ${SRC_DIR}/GcIntro.cpp)
 endif()

@@ -1,6 +1,4 @@
 /* COPYRIGHT NOTICE
-	Terminal    - A library used to do funky terminal shenanigans without
-				relying on something with massive overhead like ncurses
 
 	Copyright (C) 2023  Gavin Mitchell
 
