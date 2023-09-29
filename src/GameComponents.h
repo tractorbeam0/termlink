@@ -24,19 +24,15 @@
 #include <vector>
 #include <string>
 
-namespace Gc
+namespace GameComponents
 {
 
-  class Terminal
+  namespace Terminal
   {
-    private:
-
-    size_t strlen_utf8(const std::string& str);
-
-    public:
-
     winsize Size;
 
+    void init();
+    size_t strlen_utf8(const std::string& str);
     static void cursorHide();
     static void cursorShow();
     void clearScreen();
@@ -44,9 +40,6 @@ namespace Gc
     void setCursorPos(unsigned short x, unsigned short y);
     void slowPrint(std::string input);
     std::string center(std::string input);
-
-    Terminal();
-    ~Terminal();
   };
 
 
@@ -85,5 +78,3 @@ namespace Gc
   };
 
 }
-
-extern Gc::Terminal Term;

@@ -24,28 +24,29 @@
 
 #include "GameComponents.h"
 
-using namespace Gc;
+using namespace GameComponents::Terminal;
+using namespace GameComponents;
 using namespace std;
 
 //Clears everything on the screen *except* the "Welcome to ROBCO..." in an animated manor.
 void termClearEverythingButTitle() {
-	Term.setCursorPos(0,1);
-	for (int i = 2; i < Term.Size.ws_row; i++) {
-		Term.clearLine();
+	setCursorPos(0,1);
+	for (int i = 2; i < Size.ws_row; i++) {
+		clearLine();
 		cout << '\n' << flush;
 		usleep(16666);
 	}
-	Term.setCursorPos(0,2);
+	setCursorPos(0,2);
 }
 
 void GcGame() {
 	termClearEverythingButTitle();
-	Term.slowPrint("Password Required\n\n");
+	slowPrint("Password Required\n\n");
 	usleep(200000);
-	Term.slowPrint("Starting Debugger...");
+	slowPrint("Starting Debugger...");
 	usleep(700000);
-	Term.clearLine();
-	Term.slowPrint("Please wait...\n\n");
+	clearLine();
+	slowPrint("Please wait...\n\n");
 	
 	//Any number within the 16-bit integer range, minus the number of lines in both the tables.
 	uint16_t random = rand() % (65535 - 24);
@@ -53,9 +54,9 @@ void GcGame() {
 	for (int i = 0; i < 24; i++)
 	{
 		if (i < 12)
-			Term.setCursorPos(0, 6 + i);
+			setCursorPos(0, 6 + i);
 		else
-			Term.setCursorPos(23, 6 + i - 12);
+			setCursorPos(23, 6 + i - 12);
 		
 		output << hex << uppercase << random + i << nouppercase << dec;
 
@@ -68,14 +69,14 @@ void GcGame() {
 		tmp << output.rdbuf();
 		output = move(tmp);
 		
-		Term.slowPrint("0x" + output.str());
+		slowPrint("0x" + output.str());
 		output.str("");
 	}
 
-	Term.setCursorPos(0, 4);
-	Term.clearLine();
-	Term.slowPrint("Reading from memory...\n\n");
-	Gc::Table table("passwords.txt");
+	setCursorPos(0, 4);
+	clearLine();
+	slowPrint("Reading from memory...\n\n");
+	Table table("passwords.txt");
 
 	table.Print(7, 6);
 	table.Generate();

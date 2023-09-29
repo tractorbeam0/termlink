@@ -27,7 +27,7 @@
 
 using namespace std;
 
-void Gc::Table::openFile(string input) {
+void GameComponents::Table::openFile(string input) {
 	ifstream fileStream(input);
 	stringstream FileData;
 
@@ -37,7 +37,7 @@ void Gc::Table::openFile(string input) {
 	FileData << fileStream.rdbuf();
 	fileStream.close();
 
-	//Gc::Table is delimited with newline's, spaces, or carriage returns
+	//GameComponents::Table is delimited with newline's, spaces, or carriage returns
 	//doesn't filter ascii codes so be careful.
 	string tempString;
 	for (char c : FileData.str()) {
@@ -54,7 +54,7 @@ void Gc::Table::openFile(string input) {
 	}
 }
 
-vector<string> Gc::Table::shuffledKeys() {
+vector<string> GameComponents::Table::shuffledKeys() {
 	vector<string> tempTable;
 
 	//Check all of the keys to see if there are any left to use
@@ -88,10 +88,10 @@ vector<string> Gc::Table::shuffledKeys() {
 	return tempTable;
 }
 
-string Gc::Table::generateSegment(string key, size_t size) {
+string GameComponents::Table::generateSegment(string key, size_t size) {
 	if (key.length() >= size) {
 		#ifndef NDEBUG
-		Term.setCursorPos(0, Term.Size.ws_row);
+		GameComponents::Terminal::setCursorPos(0, GameComponents::Terminal::Size.ws_row);
 		printf("Key: %s\n", key.c_str());
 		printf("Size: %ld\n", size);
 		#endif
@@ -116,7 +116,7 @@ string Gc::Table::generateSegment(string key, size_t size) {
 	return output;
 }
 
-void Gc::Table::sortSegments(vector<string> keyTable) {
+void GameComponents::Table::sortSegments(vector<string> keyTable) {
 	//Find the size a segment would be
 	size_t segmentSize = tableArea / keyTable.size();
 
@@ -143,24 +143,24 @@ void Gc::Table::sortSegments(vector<string> keyTable) {
 		outputTable.push_back(tmp);
 }
 
-Gc::Table::Table(string file) {
+GameComponents::Table::Table(string file) {
 	openFile(file);
 	Generate();
 }
 
-void Gc::Table::Generate() {
+void GameComponents::Table::Generate() {
 	outputTable.clear();
 	sortSegments(shuffledKeys());
 }
 
-char Gc::Table::getRandomChar() {
+char GameComponents::Table::getRandomChar() {
 	return garble[rand() % garble.size()];
 }
 
-void Gc::Table::Print(unsigned x, unsigned y) {
+void GameComponents::Table::Print(unsigned x, unsigned y) {
 	//Print the table
 	for (int i = 0; i < outputTable.size(); i++) {
-		Term.setCursorPos(x, y + i);
-		Term.slowPrint(outputTable[i]);
+		GameComponents::Terminal::setCursorPos(x, y + i);
+		GameComponents::Terminal::slowPrint(outputTable[i]);
 	}
 }

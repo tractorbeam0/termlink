@@ -23,8 +23,8 @@
 
 #include "GameComponents.h"
 
+using namespace GameComponents;
 using namespace std;
-using namespace Gc;
 
 size_t Terminal::strlen_utf8(const std::string& str) {
 	size_t length = 0;
@@ -35,13 +35,8 @@ size_t Terminal::strlen_utf8(const std::string& str) {
 	return length;
 }
 
-Terminal::Terminal() {
+void Terminal::init() {
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &Size);
-}
-
-//Cleans up and prepares the terminal to be used by regular programs again.
-Terminal::~Terminal() {
-	cursorShow();
 }
 
 // It clears the screen.
@@ -92,5 +87,3 @@ std::string Terminal::center(std::string input) {
 	int x = round(( Size.ws_col - strlen_utf8(input) )/2);
 	return std::string(x, ' ') + input;
 }
-
-Terminal Term;

@@ -47,7 +47,7 @@ int main() {
 	//This is the error handler. I may or may not end up seperating this into its own source file.
 	catch (int error) {
 		#ifdef NDEBUG
-		Term.clearScreen();
+		clearScreen();
 		#endif
 
 		switch (error) {
