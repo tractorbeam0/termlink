@@ -23,17 +23,24 @@
 #include <sstream>
 #include <math.h>
 #include <vector>
-#include "GameComponents.h"
+
+#include "GcTable.h"
+#include "GcTerminal.h"
 
 using namespace std;
+
+#ifdef NDEBUG
+const string GameComponents::Table::garble = "\".!@#$%^&*()_+-=[]{};':,/<>?`~\\|";
+#else
+const string GameComponents::Table::garble = ".";
+#endif
 
 void GameComponents::Table::openFile(string input) {
 	ifstream fileStream(input);
 	stringstream FileData;
 
-	if (!fileStream.is_open()) {
+	if (!fileStream.is_open())
 		throw 1001;
-	}
 	FileData << fileStream.rdbuf();
 	fileStream.close();
 
@@ -118,7 +125,7 @@ string GameComponents::Table::generateSegment(string key, size_t size) {
 
 void GameComponents::Table::sortSegments(vector<string> keyTable) {
 	//Find the size a segment would be
-	size_t segmentSize = tableArea / keyTable.size();
+	size_t segmentSize = Area / keyTable.size();
 
 	//Generate the table
 	string tableString;
@@ -126,14 +133,14 @@ void GameComponents::Table::sortSegments(vector<string> keyTable) {
 		tableString += generateSegment(s, segmentSize);
 	}
 
-	while (tableString.length() < tableArea) {
+	while (tableString.length() < Area) {
 		tableString += garble[rand() % garble.size()];
 	}
 
 	string tmp;
 	for (char c : tableString) {
 		tmp += c;
-		if (tmp.length() == tableSize.ws_col) {
+		if (tmp.length() == Size.ws_col) {
 			outputTable.push_back(tmp);
 			tmp = "";
 		}

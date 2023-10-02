@@ -24,8 +24,9 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "main.h"
-#include "GameComponents.h"
+#include "GcTerminal.h"
+#include "GcIntro.h"
+#include "GcGame.h"
 
 void sigintHandler(int sig_num) {
 	signal(SIGINT, sigintHandler);
@@ -37,23 +38,26 @@ int main() {
 	srand(time(NULL));
 	signal(SIGINT, sigintHandler);
 
+	GameComponents::Terminal::Init();
+
 	try {
 		#ifdef NDEBUG
-		GcIntro();
+		GameComponents::Intro();
 		#endif
-		GcGame();
+		GameComponents::Game();
 	}
 
 	//This is the error handler. I may or may not end up seperating this into its own source file.
 	catch (int error) {
 		#ifdef NDEBUG
-		clearScreen();
+		GameComponents::Terminal::clearScreen();
 		#endif
 
 		switch (error) {
 			case 1000: printf("(%d) The generated table is not the expected size, and thus cannot render correctly! (This is depreciated and you should never see this)", error); break;
 			case 1001: printf("(%d) Unable to retrieve passwords.txt! Does it exist?", error); break;
 			case 1002: printf("(%d) A password is longer than a table segment would allow! Unable to form table!", error); break;
+			case 1003: printf("(%d) A GcTerminal function has been called but it hasn't been initialized yet!", error); break;
 			default  : printf("(%d) An integer has been thrown, but it is out of index! Unable to determine error.", error); break;
 		}
 		printf("\n\nUnable to continue. Cleaning up and exiting...\n\n");

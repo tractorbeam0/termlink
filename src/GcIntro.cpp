@@ -21,7 +21,8 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
-#include "GameComponents.h"
+#include "GcIntro.h"
+#include "GcTerminal.h"
 
 using namespace GameComponents::Terminal;
 using namespace GameComponents;
@@ -29,7 +30,7 @@ using namespace std;
 
 //If I could do the startup flash without nesting so many for loops it'd be 100x more readable. *sigh*...
 
-void GcIntro() {
+void GameComponents::Intro() {
 
 	cursorHide();
 	usleep(2401000); //Dramatic pause...

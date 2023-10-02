@@ -16,65 +16,29 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <sys/ioctl.h>
+#include <unistd.h>
+#include <string>
 #pragma once
 
-#include <sys/ioctl.h>
-#include <iostream>
-#include <unistd.h>
-#include <vector>
-#include <string>
-
-namespace GameComponents
-{
-
+namespace GameComponents {
   namespace Terminal
   {
-    winsize Size;
+    const winsize Size = { [] {
+      winsize temp;
+      ioctl(STDOUT_FILENO, TIOCGWINSZ, &temp);
+      return temp;
+    } () };
+    static bool initialized = false;
 
-    void init();
+    void Init();
     size_t strlen_utf8(const std::string& str);
-    static void cursorHide();
-    static void cursorShow();
+    void cursorHide();
+    void cursorShow();
     void clearScreen();
     void clearLine();
     void setCursorPos(unsigned short x, unsigned short y);
     void slowPrint(std::string input);
     std::string center(std::string input);
   };
-
-
-  class Table
-  {
-    private:
-
-    struct Key {
-      std::string ID;
-      bool isUsed;
-    };
-
-    #ifdef NDEBUG
-    const std::string garble = "\".!@#$%^&*()_+-=[]{};':,/<>?`~\\|";
-    #else
-    const std::string garble = ".";
-    #endif
-
-    const winsize tableSize = {12, 15};
-    const size_t tableArea = tableSize.ws_row * tableSize.ws_col;
-    std::vector<Key> keys;
-    std::vector<std::string> outputTable;
-
-    void openFile(std::string input);
-    void sortSegments(std::vector<std::string> keyTable);
-    std::string generateSegment(std::string key, size_t size);
-    std::vector<std::string> shuffledKeys();
-    
-    public:
-
-    void Generate();
-    char getRandomChar();
-    void Print(unsigned x, unsigned y);
-    
-    Table(std::string file);
-  };
-
 }

@@ -21,33 +21,38 @@
 #include <unistd.h>
 #include <cmath>        //center()
 
-#include "GameComponents.h"
+#include "GcTerminal.h"
 
-using namespace GameComponents;
 using namespace std;
 
-size_t Terminal::strlen_utf8(const std::string& str) {
+void checkIfInitialized() {
+	if (!GameComponents::Terminal::initialized)
+		throw 1003;
+}
+
+void GameComponents::Terminal::Init() {
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &Size);
+	initialized = true;
+}
+
+size_t GameComponents::Terminal::strlen_utf8(const std::string& str) {
 	size_t length = 0;
-	for (char c : str) {
-		if ((c & 0xC0) != 0x80)
-			++length;
-	}
+	for (char c : str)
+		if ((c & 0xC0) != 0x80) ++length;
 	return length;
 }
 
-void Terminal::init() {
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &Size);
-}
-
 // It clears the screen.
-void Terminal::clearScreen() {
-	for (int i=0; i < Size.ws_row; i++)
+void GameComponents::Terminal::clearScreen() {
+	checkIfInitialized();
+	for (int i=0; i < Size.ws_row * 2; i++)
 		std::cout << std::endl;
 	setCursorPos(0,0);
 }
 
 // It clears the line the cursor is on.
-void Terminal::clearLine() {
+void GameComponents::Terminal::clearLine() {
+	checkIfInitialized();
 	std::cout << "\r";
 	for (int i=0; i < Size.ws_col; i++) {
 		std::cout << " ";
@@ -56,23 +61,23 @@ void Terminal::clearLine() {
 }
 
 // It hides the cursor.
-void Terminal::cursorHide() {
+void GameComponents::Terminal::cursorHide() {
 	std::cout << "\e[?25l" << std::flush;
 }
 
 // It shows the cursor.
-void Terminal::cursorShow() {
+void GameComponents::Terminal::cursorShow() {
 	std::cout << "\e[?25h" << std::flush;
 }
 
 // Uses an ansi code to change the cursor position in the terminal.
 // The terminal location values start at 1,1 not 0,0 so for simplicity it increments them by one so you can input 0,0 for the top-left.
-void Terminal::setCursorPos(unsigned short col, unsigned short row) {
+void GameComponents::Terminal::setCursorPos(unsigned short col, unsigned short row) {
 	printf("\033[%d;%dH",++row,++col);
 }
 
 //Usage: slowPrint("Hello, World!")
-void Terminal::slowPrint(std::string input) {
+void GameComponents::Terminal::slowPrint(std::string input) {
 	for (char c : input) {
 		#ifdef NDEBUG
 		usleep(16666);
@@ -83,7 +88,8 @@ void Terminal::slowPrint(std::string input) {
 
 //Usage: cout << center("Hello World!");
 // Returns the string with the proper number of whitespace to appear at the center of the screen when printed.
-std::string Terminal::center(std::string input) {
-	int x = round(( Size.ws_col - strlen_utf8(input) )/2);
+std::string GameComponents::Terminal::center(std::string input) {
+	checkIfInitialized();
+	int x = floor(( Size.ws_col - strlen_utf8(input) )/2);
 	return std::string(x, ' ') + input;
 }

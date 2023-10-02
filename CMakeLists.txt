@@ -8,15 +8,8 @@ if(NOT SRC_DIR)
     set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 endif()
 
-add_executable(termlink
-    ${SRC_DIR}/main.cpp
-    ${SRC_DIR}/main.h
-    ${SRC_DIR}/GcTable.cpp
-    ${SRC_DIR}/GcTerminal.cpp
-    ${SRC_DIR}/GcGame.cpp
-    ${SRC_DIR}/GameComponents.h
-)
+add_compile_options(-Wall -Wextra -Wpedantic -std=c++2a)
 
-if(NOT CMAKE_BUILD_TYPE MATCHES Debug)
-    target_sources(termlink PRIVATE ${SRC_DIR}/GcIntro.cpp)
-endif()
+file(GLOB_RECURSE GLOB_SRC "${SRC_DIR}/*.h" "${SRC_DIR}/*.cpp")
+
+add_executable(termlink ${GLOB_SRC})

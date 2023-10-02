@@ -18,7 +18,6 @@
 
 #pragma once
 
-void GcGame();
-#ifdef NDEBUG
-void GcIntro();
-#endif
+namespace GameComponents {
+  void Game();
+}

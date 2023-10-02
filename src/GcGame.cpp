@@ -22,7 +22,9 @@
 #include <math.h>
 #include <string>
 
-#include "GameComponents.h"
+#include "GcGame.h"
+#include "GcTerminal.h"
+#include "GcTable.h"
 
 using namespace GameComponents::Terminal;
 using namespace GameComponents;
@@ -33,13 +35,13 @@ void termClearEverythingButTitle() {
 	setCursorPos(0,1);
 	for (int i = 2; i < Size.ws_row; i++) {
 		clearLine();
-		cout << '\n' << flush;
+		cout << endl;
 		usleep(16666);
 	}
 	setCursorPos(0,2);
 }
 
-void GcGame() {
+void GameComponents::Game() {
 	termClearEverythingButTitle();
 	slowPrint("Password Required\n\n");
 	usleep(200000);
@@ -67,7 +69,7 @@ void GcGame() {
 		}
 
 		tmp << output.rdbuf();
-		output = move(tmp);
+		output = std::move(tmp);
 		
 		slowPrint("0x" + output.str());
 		output.str("");
