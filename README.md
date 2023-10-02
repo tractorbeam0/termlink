@@ -11,4 +11,4 @@ This serves a few purposes:
 ## Building
 You know how Cmake was created for the purpose of generating makefiles so things are cross-compatible? I thought that was too complicated, so here we are with a makefile to manage cmake, making a makefile, in which the first makefile runs the second makefile to build the project. How fun.
 
-At the very least, that means building is simple. Just run make, and the compiled binary will be located in `.../build/release/termlink`. All you have to do is ensure `passwords.txt` is in the same directory.
+At the very least, that means building is simple. Just run make, and the compiled binary will be located in `.../build/termlink`.
