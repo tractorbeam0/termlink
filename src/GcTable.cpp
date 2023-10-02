@@ -66,7 +66,7 @@ vector<string> GameComponents::Table::shuffledKeys() {
 
 	//Check all of the keys to see if there are any left to use
 	//Also see if there are enough to generate a corresponding segment
-	size_t keysRemaining;
+	size_t keysRemaining = 0;
 	for (Key p : keys) {
 		if (!p.isUsed)
 			keysRemaining++;
