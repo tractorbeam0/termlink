@@ -29,7 +29,6 @@ namespace GameComponents {
       ioctl(STDOUT_FILENO, TIOCGWINSZ, &temp);
       return temp;
     } () };
-    static bool initialized = false;
 
     void Init();
     size_t strlen_utf8(const std::string& str);

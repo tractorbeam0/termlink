@@ -25,14 +25,8 @@
 
 using namespace std;
 
-void checkIfInitialized() {
-	if (!GameComponents::Terminal::initialized)
-		throw 1003;
-}
-
 void GameComponents::Terminal::Init() {
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &Size);
-	initialized = true;
 }
 
 size_t GameComponents::Terminal::strlen_utf8(const std::string& str) {
@@ -44,7 +38,6 @@ size_t GameComponents::Terminal::strlen_utf8(const std::string& str) {
 
 // It clears the screen.
 void GameComponents::Terminal::clearScreen() {
-	checkIfInitialized();
 	for (int i=0; i < Size.ws_row * 2; i++)
 		std::cout << std::endl;
 	setCursorPos(0,0);
@@ -52,7 +45,6 @@ void GameComponents::Terminal::clearScreen() {
 
 // It clears the line the cursor is on.
 void GameComponents::Terminal::clearLine() {
-	checkIfInitialized();
 	std::cout << "\r";
 	for (int i=0; i < Size.ws_col; i++) {
 		std::cout << " ";
@@ -89,7 +81,6 @@ void GameComponents::Terminal::slowPrint(std::string input) {
 //Usage: cout << center("Hello World!");
 // Returns the string with the proper number of whitespace to appear at the center of the screen when printed.
 std::string GameComponents::Terminal::center(std::string input) {
-	checkIfInitialized();
 	int x = floor(( Size.ws_col - strlen_utf8(input) )/2);
 	return std::string(x, ' ') + input;
 }
