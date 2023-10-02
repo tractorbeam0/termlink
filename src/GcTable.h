@@ -30,6 +30,8 @@ namespace GameComponents {
     struct Key {
       std::string ID;
       bool isUsed;
+
+      Key(std::string id, bool used) : ID(id), isUsed(used) {}
     };
 
     static const std::string garble;

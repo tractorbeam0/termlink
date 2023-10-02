@@ -49,15 +49,15 @@ void GameComponents::Table::openFile(string input) {
 	string tempString;
 	for (char c : FileData.str()) {
 		if (isspace(c)) {
-			keys.push_back((Key){tempString, false});
+			keys.push_back(Key(tempString, false));
 			tempString.clear();
 			continue;
 		}
 		tempString += c;
 	}
 
-	if (tempString.empty() == false) {
-		keys.push_back((Key){tempString, false});
+	if (!tempString.empty()) {
+		keys.push_back(Key(tempString, false));
 	}
 }
 
