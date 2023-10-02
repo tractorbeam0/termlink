@@ -33,7 +33,7 @@ namespace GameComponents {
     };
 
     static const std::string garble;
-    static constexpr winsize Size = {12, 15};
+    static constexpr winsize Size = {12, 15, 0, 0};
     static constexpr size_t Area = Size.ws_row * Size.ws_col;
     
     std::vector<Key> keys;
