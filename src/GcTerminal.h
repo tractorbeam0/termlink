@@ -39,5 +39,5 @@ namespace GameComponents {
     void setCursorPos(unsigned short x, unsigned short y);
     void slowPrint(std::string input);
     std::string center(std::string input);
-  };
+  }
 }
