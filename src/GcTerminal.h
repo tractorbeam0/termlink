@@ -24,10 +24,10 @@
 namespace GameComponents {
   namespace Terminal
   {
+    //'Tis a namespace, and thus there can be no initializer.
     const winsize Size = { [] {
-      winsize temp;
-      ioctl(STDOUT_FILENO, TIOCGWINSZ, &temp);
-      return temp;
+      ioctl(STDOUT_FILENO, TIOCGWINSZ, &Size);
+      return Size;
     } () };
 
     void Init();
