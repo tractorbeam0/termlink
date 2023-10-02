@@ -1,4 +1,4 @@
-termlink
 .vscode
-*.s
-a.out
+bin
+build
+build-debug
