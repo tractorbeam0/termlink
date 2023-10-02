@@ -33,7 +33,7 @@ using namespace std;
 //Clears everything on the screen *except* the "Welcome to ROBCO..." in an animated manor.
 void termClearEverythingButTitle() {
 	setCursorPos(0,1);
-	for (int i = 2; i < Size.ws_row; i++) {
+	for (unsigned short i = 2; i < Size.ws_row; i++) {
 		clearLine();
 		cout << endl;
 		usleep(16666);
@@ -64,7 +64,7 @@ void GameComponents::Game() {
 
 		stringstream tmp;
 		if (output.str().length() < 4) {
-			for (int i = 0; i < 4 - output.str().length(); i++)
+			for (size_t i = 0; i < 4 - output.str().length(); i++)
 				tmp << "0";
 		}
 

@@ -83,7 +83,7 @@ vector<string> GameComponents::Table::shuffledKeys() {
 		throw 1003;
 	}
 
-	for (int i = 0; i < numKeys; i++) {
+	for (size_t i = 0; i < numKeys; i++) {
 		int random = floor (rand() % keys.size());
 		if (!keys[random].isUsed) {
 			tempTable[i] = keys[random].ID;
@@ -109,7 +109,7 @@ string GameComponents::Table::generateSegment(string key, size_t size) {
 	string output;
 
 	//Fill segment with garble
-	for (int i = 0; i < size; i++) {
+	for (size_t i = 0; i < size; i++) {
 		output += getRandomChar();
 	}
 
@@ -166,7 +166,7 @@ char GameComponents::Table::getRandomChar() {
 
 void GameComponents::Table::Print(unsigned x, unsigned y) {
 	//Print the table
-	for (int i = 0; i < outputTable.size(); i++) {
+	for (size_t i = 0; i < outputTable.size(); i++) {
 		GameComponents::Terminal::setCursorPos(x, y + i);
 		GameComponents::Terminal::slowPrint(outputTable[i]);
 	}
