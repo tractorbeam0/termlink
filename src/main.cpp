@@ -29,6 +29,7 @@
 #include "GcGame.h"
 
 void sigintHandler(int sig_num) {
+	if (sig_num != SIGINT) {} //This is here solely to silence warnings about unused variables, it's used to work with the below signal() call.
 	signal(SIGINT, sigintHandler);
 	printf("\n\nInturrupt handled. Cleaning up properly...\n");
 	exit(0);
