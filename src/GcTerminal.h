@@ -1,7 +1,4 @@
 /* COPYRIGHT NOTICE
-	termlink  - A recreation of the terminal hacking minigame from the
-				Fallout series, with a sizable portion of personal
-				touches
 
 	Copyright (C) 2023  Gavin Mitchell
 
@@ -19,19 +16,28 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-//"YOU ARE OUT OF UNIFORM SOLDIER, WHERE IS YOUR POOWHHERR AAHHRRMOR!?"
+#include <sys/ioctl.h>
+#include <unistd.h>
+#include <string>
+#pragma once
 
-#include "termfunk.h"
-#include "main.h"
+namespace GameComponents {
+  namespace Terminal
+  {
+    //'Tis a namespace, and thus there can be no initializer.
+    const winsize Size = { [] {
+      ioctl(STDOUT_FILENO, TIOCGWINSZ, &Size);
+      return Size;
+    } () };
 
-int main() {
-
-	funkInit();
-	srand(time(NULL));
-
-	Intro();
-	Game();
-	
-	funkClose();
-	return 0;
+    void Init();
+    size_t strlen_utf8(const std::string& str);
+    void cursorHide();
+    void cursorShow();
+    void clearScreen();
+    void clearLine();
+    void setCursorPos(unsigned short x, unsigned short y);
+    void slowPrint(std::string input);
+    std::string center(std::string input);
+  }
 }

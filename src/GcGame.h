@@ -1,8 +1,4 @@
 /* COPYRIGHT NOTICE
-	main.h    - main's header file
-	termlink  - A recreation of the terminal hacking minigame from the
-							Fallout series, with a sizable portion of personal
-							touches
 
 	Copyright (C) 2023  Gavin Mitchell
 
@@ -22,5 +18,6 @@
 
 #pragma once
 
-void Game();
-void Intro();
+namespace GameComponents {
+  void Game();
+}
