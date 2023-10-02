@@ -31,13 +31,14 @@ namespace GameComponents {
       std::string ID;
       bool isUsed;
 
-      Key(std::string id, bool used) : ID(id), isUsed(used) {}
+      Key(std::string id = "", bool used = false) : ID(id), isUsed(used) {}
     };
 
     static const std::string garble;
     static constexpr winsize Size = {12, 15, 0, 0};
     static constexpr size_t Area = Size.ws_row * Size.ws_col;
     
+    Key password;
     std::vector<Key> keys;
     std::vector<std::string> outputTable;
 

@@ -92,6 +92,9 @@ vector<string> GameComponents::Table::shuffledKeys() {
 			i--;
 	}
 
+	int random = floor(rand() % tempTable.size());
+	password = Key(tempTable[random], true);
+
 	return tempTable;
 }
 
