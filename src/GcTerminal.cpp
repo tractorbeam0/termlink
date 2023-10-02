@@ -54,12 +54,12 @@ void GameComponents::Terminal::clearLine() {
 
 // It hides the cursor.
 void GameComponents::Terminal::cursorHide() {
-	std::cout << "\e[?25l" << std::flush;
+	std::cout << "\033[?25l" << std::flush;
 }
 
 // It shows the cursor.
 void GameComponents::Terminal::cursorShow() {
-	std::cout << "\e[?25h" << std::flush;
+	std::cout << "\033[?25h" << std::flush;
 }
 
 // Uses an ansi code to change the cursor position in the terminal.
