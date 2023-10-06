@@ -18,7 +18,13 @@
 
 #pragma once
 
-#include <sys/ioctl.h>
+#ifdef linux
+  #include <sys/ioctl.h>
+#elif _WIN32
+  #include <windows.h>
+  #include "GcTerminal.h"
+#endif
+
 #include <vector>
 #include <string>
 

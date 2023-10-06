@@ -16,21 +16,47 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <sys/ioctl.h>
-#include <unistd.h>
 #include <string>
+#include <stdint.h>
 #pragma once
+
+#ifdef linux
+  #include <unistd.h>
+  #include <sys/ioctl.h>
+
+#elif _WIN32
+  #include <windows.h>
+
+  struct winsize {
+	  unsigned short ws_row;
+	  unsigned short ws_col;
+    unsigned short xpixel;
+    unsigned short ypixel;
+  };
+#endif
+
+void timer(uint64_t usec);
 
 namespace GameComponents {
   namespace Terminal
   {
-    //'Tis a namespace, and thus there can be no initializer.
-    const winsize Size = { [] {
-      ioctl(STDOUT_FILENO, TIOCGWINSZ, &Size);
-      return Size;
-    } () };
+    #ifdef linux
+      const winsize Size = { [] {
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &Size);
+        return Size;
+      } () };
+    #elif _WIN32
+      //Writing code for compatibility is sooo fun.
+      const winsize Size = { [] {
+          SetConsoleOutputCP(CP_UTF8);  //Compatibility with all the box characters.
+        	CONSOLE_SCREEN_BUFFER_INFO temp;
+	        GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &temp);
+          return winsize {static_cast<unsigned short>(temp.srWindow.Bottom - temp.srWindow.Top + 1),
+                          static_cast<unsigned short>(temp.srWindow.Right - temp.srWindow.Left + 1),
+                          0, 0};
+      } () };
+    #endif
 
-    void Init();
     size_t strlen_utf8(const std::string& str);
     void cursorHide();
     void cursorShow();

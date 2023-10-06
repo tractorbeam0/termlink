@@ -16,13 +16,15 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifdef linux
+	#include <unistd.h>
+#endif
+
 #include <iostream>
 #include <cmath>
-#include <unistd.h>
-#include <sys/ioctl.h>
 
-#include "GcIntro.h"
 #include "GcTerminal.h"
+#include "GcIntro.h"
 
 using namespace GameComponents::Terminal;
 using namespace GameComponents;
@@ -33,7 +35,7 @@ using namespace std;
 void GameComponents::Intro() {
 
 	cursorHide();
-	usleep(2401000); //Dramatic pause...
+	timer(2401000); //Dramatic pause...
 	
 	//Startup
 	for (int i = 0; i < 4; i++) {
@@ -43,10 +45,11 @@ void GameComponents::Intro() {
 				setCursorPos(i, linecoord);
 				cout << "█";
 			}
+			cout << flush;
 		}
-		usleep(30000);
+		timer(30000);
 	}
-	usleep(30000);
+	timer(30000);
 	
 	//White screen
 	setCursorPos(0,0);
@@ -54,7 +57,7 @@ void GameComponents::Intro() {
 		cout << "█";
 	}
 	cout << flush;
-	usleep(100000);
+	timer(100000);
 	
 	//Vertical lines
 	clearScreen();
@@ -64,9 +67,9 @@ void GameComponents::Intro() {
 			cout << " │";
 		}
 		cout << flush;
-		usleep(2000);
+		timer(2000);
 	}
-	usleep(100000);
+	timer(100000);
 	
 	//Grid
 	setCursorPos(0,0);
@@ -76,20 +79,20 @@ void GameComponents::Intro() {
 			cout << "─┼";
 		}
 		cout << flush;
-		usleep(2000);
+		timer(2000);
 	}
-	usleep(100000);
+	timer(100000);
 
 	//Horizontal lines
 	for (int i = 0; i < Size.ws_col; i+=2) {
-		for (int j = 0; j < Size.ws_row - 1; j++) {
+		for (int j = 0; j < Size.ws_row; j++) {
 			setCursorPos(i,j);
 			cout << "──";
 		}
 		cout << flush;
-		usleep(2000);
+		timer(2000);
 	}
-	usleep(120000);
+	timer(120000);
 
 	setCursorPos(0,0);
 	for (int i = 0; i < Size.ws_row; i++) {
@@ -97,24 +100,24 @@ void GameComponents::Intro() {
 			cout << " ";
 		}
 		cout << flush;
-		usleep(2000);
+		timer(2000);
 	}
 	
 	//Wait Screen
 	clearScreen();
-	usleep(1000000);
+	timer(1000000);
 	cout << "PLEASE WAIT..." << flush;
-	usleep(2000000);
+	timer(2000000);
 	
 	//Wait Screen, post ascii init
 	clearScreen();
 	cout << "Please Wait..." << flush;
-	usleep(2300000);
+	timer(2300000);
  
 	//Term OK screen
 	clearScreen();
  
-	usleep(200000);  
+	timer(200000);  
 	setCursorPos(0, round(Size.ws_row/2) - 1);
 	cout << '\7';
 	cout << center("┏━━━━━━━━━━━━━━━━━━┓") << '\n';
@@ -127,43 +130,43 @@ void GameComponents::Intro() {
 	
 	//Loading Lines
 	cout << center("ROBCO Industries (TM)") << "\n\n" << flush;
-	usleep(600000);
+	timer(600000);
 	cout << center("Loading Termlink interface...") << flush;
-	usleep(1400000);
+	timer(1400000);
 	clearLine();
 	cout << center("Looking for Host...") << flush;
-	usleep(700000);
+	timer(700000);
 	clearLine();
 	cout << center("Host Found!") << flush;
-	usleep(300000);
+	timer(300000);
 	clearLine();
 	cout << center("Handshake Complete") << flush;
-	usleep(500000);
+	timer(500000);
 	cout << "\n" << center("Connected at 600 bits/s") << "\x1b[A" << flush; //last ascii code is essentially a reverse newline
-	usleep(400000);
+	timer(400000);
 	clearLine();
 	cout << center("Host is finishing up...") << flush;
-	usleep(1100000);
+	timer(1100000);
 
 	//Fancily scrolling the text up and off the screen...
 	for (int i = 0; i <= Size.ws_row; i++) {
 		cout << "\n" << flush;
-		usleep(16666);
+		timer(16666);
 	}
 	setCursorPos(0,0);
 	cursorShow();
 
-	usleep(3000000);
+	timer(3000000);
 	slowPrint("Welcome to ROBCO Industries (TM) Termlink\n");
 	slowPrint("**LOGIN SCRIPT ACTIVE**\n\n");
-	usleep(150000);
+	timer(150000);
 	slowPrint("TERMINAL SET TO MAINTANANCE MODE - Contact your administrator.\n");
-	slowPrint("((HOOKED!))\n");
-	usleep(50000);
-	slowPrint("00> OPN MEM 00,7D\n");
+	slowPrint("\n00> ");
+	timer(100000);
+	slowPrint("((HOOKED))\n?\n00> OPN MEM 00,7D\n");
 	slowPrint("00> OPN MEM E1,FF\n");
 	slowPrint("E1> INS MEM 69, 00 5F 4B D8 A7 01\n");
-	usleep(150000);
+	timer(150000);
 	slowPrint("\nUNAUTHORIZED ACCESS TO KERNEL MEMORY DETECTED\n");
 	slowPrint("CUTTING CONNECTION...\n\n");
 	slowPrint("((IGNORE THAT))\n");
@@ -171,5 +174,5 @@ void GameComponents::Intro() {
 	slowPrint("E3> INS MEM 6B, 07 55 7C 3E D1 1F\n");
 	slowPrint("((CODE INJECTION COMPLETE))\n");
 	slowPrint("E4> RUN E1\n");
-	usleep(520000);
+	timer(520000);
 }

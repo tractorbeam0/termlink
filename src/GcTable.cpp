@@ -16,7 +16,6 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <sys/ioctl.h>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -77,7 +76,7 @@ vector<string> GameComponents::Table::shuffledKeys() {
 
 	if (keysRemaining < numKeys) {
 		#ifndef NDEBUG
-		printf("Need to return %ld keys, but there were only %ld left.\n", numKeys, keysRemaining);
+		printf("Need to return %lld keys, but there were only %lld left.\n", numKeys, keysRemaining);
 		#endif
 
 		throw 1003;
@@ -103,7 +102,7 @@ string GameComponents::Table::generateSegment(string key, size_t size) {
 		#ifndef NDEBUG
 		GameComponents::Terminal::setCursorPos(0, GameComponents::Terminal::Size.ws_row);
 		printf("Key: %s\n", key.c_str());
-		printf("Size: %ld\n", size);
+		printf("Size: %lld\n", size);
 		#endif
 
 		throw 1002;

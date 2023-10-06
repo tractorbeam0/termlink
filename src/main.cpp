@@ -32,14 +32,13 @@ void sigintHandler(int sig_num) {
 	if (sig_num != SIGINT) {} //This is here solely to silence warnings about unused variables, it's used to work with the below signal() call.
 	signal(SIGINT, sigintHandler);
 	printf("\n\nInturrupt handled. Cleaning up properly...\n");
+	GameComponents::Terminal::cursorShow();
 	exit(0);
 }
 
 int main() {
 	srand(time(NULL));
 	signal(SIGINT, sigintHandler);
-
-	GameComponents::Terminal::Init();
 
 	try {
 		#ifdef NDEBUG

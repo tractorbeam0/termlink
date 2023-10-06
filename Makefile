@@ -2,42 +2,43 @@
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 SOURCE_DIR = $(ROOT_DIR)/src
+CMAKE_FLAGS = -DCXX:G++ -DSRC_DIR:STRING=$(SOURCE_DIR)
 MAKEFILE_RELEASE = $(ROOT_DIR)/build/Makefile
 MAKEFILE_DEBUG = $(ROOT_DIR)/build-debug/Makefile
 BIN_DIR := $(ROOT_DIR)/build
 ALL_ASSETS := $(wildcard $(ROOT_DIR)/assets/*)
 
-release: CMAKE_FLAGS := -DCMAKE_BUILD_TYPE=Release -DSRC_DIR:STRING=$(SOURCE_DIR)
+release: CMAKE_FLAGS := -DCMAKE_BUILD_TYPE=Release
 release: configure build finalize
 
-debug: CMAKE_FLAGS := -DCMAKE_BUILD_TYPE=Debug -DSRC_DIR:STRING=$(SOURCE_DIR)
+debug: CMAKE_FLAGS := -DCMAKE_BUILD_TYPE=Debug
 debug: BIN_DIR := $(ROOT_DIR)/build-debug
 debug: configuredebug build finalize
 
 test: debug
-	cd $(ROOT_DIR)/build-debug && ./termlink
+	@cd $(ROOT_DIR)/build-debug && ./termlink
 
 clean:
-	rm -rf $(BIN_DIR) $(ROOT_DIR)/build-debug
+	@rm -rf $(BIN_DIR) $(ROOT_DIR)/build-debug
 
 rebuild: clean release
 
 configure: $(MAKEFILE_RELEASE)
 
 $(MAKEFILE_RELEASE):
-	mkdir -p $(BIN_DIR)
-	cmake $(CMAKE_FLAGS) -B $(BIN_DIR)
+	@mkdir -p $(BIN_DIR)
+	@cmake $(CMAKE_FLAGS) -B $(BIN_DIR)
 
 configuredebug: $(MAKEFILE_DEBUG)
 
 $(MAKEFILE_DEBUG):
-	mkdir -p $(BIN_DIR)
-	cmake $(CMAKE_FLAGS) -B $(BIN_DIR)
+	@mkdir -p $(BIN_DIR)
+	@cmake $(CMAKE_FLAGS) -B $(BIN_DIR)
 
-build: 
-	make --no-print-directory -C $(BIN_DIR)
+build:
+	@cmake --build $(BIN_DIR) -- --no-print-directory -C $(BIN_DIR)
 
 finalize: $(ALL_ASSETS)
-	cp -r $^ $(BIN_DIR)
+	@cp -r $^ $(BIN_DIR)
 
 .PHONY: release debug test clean rebuild configure build finalize

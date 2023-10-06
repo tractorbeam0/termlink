@@ -17,14 +17,13 @@
 */
 
 #include <iostream>
-#include <unistd.h>
 #include <sstream>
-#include <math.h>
 #include <string>
+#include <math.h>
 
 #include "GcGame.h"
-#include "GcTerminal.h"
 #include "GcTable.h"
+#include "GcTerminal.h"
 
 using namespace GameComponents::Terminal;
 using namespace GameComponents;
@@ -36,7 +35,7 @@ void termClearEverythingButTitle() {
 	for (unsigned short i = 2; i < Size.ws_row; i++) {
 		clearLine();
 		cout << endl;
-		usleep(16666);
+		timer(16666);
 	}
 	setCursorPos(0,2);
 }
@@ -44,9 +43,9 @@ void termClearEverythingButTitle() {
 void GameComponents::Game() {
 	termClearEverythingButTitle();
 	slowPrint("Password Required\n\n");
-	usleep(200000);
+	timer(200000);
 	slowPrint("Starting Debugger...");
-	usleep(700000);
+	timer(700000);
 	clearLine();
 	slowPrint("Please wait...\n\n");
 	

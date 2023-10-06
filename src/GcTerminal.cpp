@@ -16,18 +16,35 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <sys/ioctl.h>  //funkInit(), to grab terminal size
+#include <cmath>
+#include <format>
+#include <stdint.h>
 #include <iostream>
-#include <unistd.h>
-#include <cmath>        //center()
-
 #include "GcTerminal.h"
 
 using namespace std;
 
-void GameComponents::Terminal::Init() {
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &Size);
+#ifdef linux
+	#include <sys/ioctl.h>
+	#include <unistd.h>
+#elif _WIN32
+	#include <windows.h>
+#endif
+
+#ifdef NDEBUG
+void timer(uint64_t time) {
+	#ifdef linux
+		usleep(time);
+	#elif _WIN32
+		Sleep(time/1000);
+	#endif
 }
+#else
+void timer(uint64_t time) {
+	if (time) {} //Do nothing but silence warnings abt unused vars.
+}
+#endif
+
 
 size_t GameComponents::Terminal::strlen_utf8(const std::string& str) {
 	size_t length = 0;
@@ -39,7 +56,8 @@ size_t GameComponents::Terminal::strlen_utf8(const std::string& str) {
 // It clears the screen.
 void GameComponents::Terminal::clearScreen() {
 	for (int i=0; i < Size.ws_row * 2; i++)
-		std::cout << std::endl;
+		std::cout << '\n';
+	std::cout << std::flush;
 	setCursorPos(0,0);
 }
 
@@ -65,16 +83,16 @@ void GameComponents::Terminal::cursorShow() {
 // Uses an ansi code to change the cursor position in the terminal.
 // The terminal location values start at 1,1 not 0,0 so for simplicity it increments them by one so you can input 0,0 for the top-left.
 void GameComponents::Terminal::setCursorPos(unsigned short col, unsigned short row) {
-	printf("\033[%d;%dH",++row,++col);
+	std::cout << std::format("\033[{};{}H",++row,++col);
 }
 
 //Usage: slowPrint("Hello, World!")
 void GameComponents::Terminal::slowPrint(std::string input) {
 	for (char c : input) {
 		#ifdef NDEBUG
-		usleep(16666);
+		timer(16666);
 		#endif
-		std::cout << std::string(1, c) << std::flush;
+		std::cout << c;
 	}
 }
 
