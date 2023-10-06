@@ -2,3 +2,4 @@
 bin
 build
 build-debug
+preload.cmake
